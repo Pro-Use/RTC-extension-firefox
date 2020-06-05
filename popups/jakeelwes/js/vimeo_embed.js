@@ -1,5 +1,6 @@
 var id = document.getElementById('video').getAttribute('data-video-id');
 var pos = document.getElementById('video').getAttribute('data-video-pos');
+var video_div = document.getElementById('main');
 
 var options = {
     background: true,
@@ -11,6 +12,12 @@ var options = {
 };
 
 var vimeo_embed = new Vimeo.Player('video', options);
+
+vimeo_embed.on('loadstart', function(data) {
+    var new_height = video_div.offsetHeight - window.innerHeight;
+    window.resizeBy(0, new_height);
+    vimeo_embed.off('loadstart');
+});
 
 if (pos) {
     vimeo_embed.setCurrentTime(pos).then(function(seconds) {

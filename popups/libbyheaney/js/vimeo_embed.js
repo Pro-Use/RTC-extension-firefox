@@ -17,3 +17,9 @@ vimeo_embed.on('ended', function(data) {
   video_div.style.display = "none";
   info_div.style.display = "flex";
 });
+
+vimeo_embed.on('loadstart', function(data) {
+	var new_height = video_div.offsetHeight - window.innerHeight;
+	window.resizeBy(0, new_height);
+	vimeo_embed.off('loadstart');
+});
