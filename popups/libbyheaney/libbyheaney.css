@@ -1,0 +1,19 @@
+#info {
+    display: none;
+    height: -webkit-fill-available;
+    margin: 0 50px;
+    font-size: 1.2em;
+    justify-content: center;
+    align-items: center;
+}
+
+a:hover {
+    color: #ababab;
+}
+
+a {
+    color: #636363;
+    text-decoration: unset;
+}
+
+

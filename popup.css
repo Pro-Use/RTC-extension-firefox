@@ -1,0 +1,23 @@
+.button {
+    font-size: 1.2em;
+    line-height:2em;
+    width: -webkit-fill-available;
+    white-space: nowrap;
+    padding: 20px 30px;
+    border-bottom: black 1px solid;
+    cursor: pointer;
+}
+
+.button:hover {
+    color: #c2c2c2;
+}
+
+div#closeAll {
+    border: 0px;
+}
+
+.artist {
+    font-style: italic;
+    padding-bottom: 0.3333em;
+    border-bottom: 1px #c2c2c2 solid;
+}
