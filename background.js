@@ -77,6 +77,12 @@ chrome.windows.onRemoved.addListener(function(id) {
               if (chrome.runtime.lastError) reject(chrome.runtime.lastError);
                 else {
                   let new_id = newWindow.id;
+                  chrome.windows.get(new_id, function (wid) {
+                    if (fullscreen && wid.state != "fullscreen") {
+                      console.log("window not fullscreen but should be...");
+                      chrome.windows.update(new_id, {state: "fullscreen"});
+                    }
+                  });
                   resolve(new_id);
                 }
               });
