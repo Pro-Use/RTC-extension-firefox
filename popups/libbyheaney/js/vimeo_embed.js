@@ -19,7 +19,9 @@ vimeo_embed.on('ended', function(data) {
 });
 
 vimeo_embed.on('loadstart', function(data) {
-	var new_height = video_div.offsetHeight - window.innerHeight;
-	window.resizeBy(0, new_height);
-	vimeo_embed.off('loadstart');
+    var new_height = video_div.offsetHeight - window.innerHeight;
+    if (new_height > 0) {
+        window.resizeBy(0, new_height);
+        vimeo_embed.off('loadstart');
+    }
 });

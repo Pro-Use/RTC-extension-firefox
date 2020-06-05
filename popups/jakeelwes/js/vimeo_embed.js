@@ -15,8 +15,10 @@ var vimeo_embed = new Vimeo.Player('video', options);
 
 vimeo_embed.on('loadstart', function(data) {
     var new_height = video_div.offsetHeight - window.innerHeight;
-    window.resizeBy(0, new_height);
-    vimeo_embed.off('loadstart');
+    if (new_height > 0) {
+        window.resizeBy(0, new_height);
+        vimeo_embed.off('loadstart');
+    }
 });
 
 if (pos) {
