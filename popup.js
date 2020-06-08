@@ -1,15 +1,8 @@
 
 //Background comms
  var port = chrome.extension.connect({
-      name: "Sample Communication"
+      name: "RTC_Comms"
  });
-
-// Artist button handlers
-//let gretchenandrew = document.getElementById('gretchenandrew');
-//gretchenandrew.onclick = () => port.postMessage("gretchenandrew");
-//
-//let jakeelwes = document.getElementById('jakeelwes');
-//jakeelwes.onclick = () => port.postMessage("jakeelwes");
 
 const buttons = document.querySelectorAll('.button');
 
