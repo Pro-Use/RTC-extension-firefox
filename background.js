@@ -2,23 +2,6 @@
 var popups = [];
 
 
-// Storage listener for debugging
-chrome.storage.onChanged.addListener(function (changes, namespace) {
-    for (var key in changes) {
-        var storageChange = changes[key];
-        console.log('Storage key "%s" in namespace "%s" changed. ' +
-                'Old value was "%s", new value is "%s".',
-                key,
-                namespace,
-                storageChange.oldValue,
-                storageChange.newValue);
-        if (key === "popups") {
-            console.log('Value currently is ' + storageChange.newValue);
-//            chrome.windows.remove(storageChange.newValue[0]);
-        }
-    }
-});
-
 // Clear Window cache on load
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.remove("popups", function () {
@@ -239,3 +222,4 @@ libbyheaney = () => {
     openMultiple(dims_array, url_array);
 
 };
+
