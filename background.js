@@ -170,12 +170,14 @@ gretchenandrew = () => {
 };
 
 sofiacrespo = async() => {
-  let id = await openWindow(null, true,"https://darkfractures.com/example/index.html");
+  let dims = [0,0,window.screen.availWidth, window.screen.availHeight];
+  let id = await openWindow(dims, false,"https://darkfractures.com/example/index.html");
   storePopupID(id);
 };
 
 disnovation = async() => {
-  let id = await openWindow(null, true,"http://predictiveartbot.com/");
+  let dims = [0,0,window.screen.availWidth, window.screen.availHeight];
+  let id = await openWindow(dims, false,"http://predictiveartbot.com/");
   storePopupID(id);
 };
 
@@ -237,9 +239,3 @@ libbyheaney = () => {
     openMultiple(dims_array, url_array);
 
 };
-
-
-// open fullscreen
-//openFS.onclick = function() {
-//    openWindow(null, true, defaultURL, storePopupID);
-//}; 
