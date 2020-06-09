@@ -267,16 +267,18 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     }
 });
 
-chrome.alarms.getAll(function(alarms) {
-    chrome.alarms.clearAll();
-    if (alarms.length < times.length) {
-        for (i = 0; i < times.length; i++) {
-            create_alarm(i);
-        }
-        chrome.alarms.getAll(function(alarms) {
+chrome.runtime.onStartup.addListener(function() {
+    chrome.alarms.getAll(function(alarms) {
+        chrome.alarms.clearAll();
+        if (alarms.length < times.length) {
+            for (i = 0; i < times.length; i++) {
+                create_alarm(i);
+            }
+            chrome.alarms.getAll(function(alarms) {
+                console.log(alarms);
+            });
+        } else {
             console.log(alarms);
-        });
-    } else {
-        console.log(alarms);
-    }
+        }
+    });
 });
