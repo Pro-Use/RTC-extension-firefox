@@ -2,11 +2,20 @@
 var popups = [];
 
 
-// Clear Window cache on load
+// Clear Window cache + create alarms on install
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.remove("popups", function () {
         console.log("Cleared popup cache");
     });
+    create_alarms();
+});
+
+// Clear Window cache + create alarms on restart
+chrome.runtime.onStartup.addListener(function () {
+    chrome.storage.local.remove("popups", function () {
+        console.log("Cleared popup cache");
+    });
+    create_alarms();
 });
 
 // Closed window listener
@@ -237,10 +246,13 @@ var create_alarm = (pos) => {
     //now.setMinutes(now.getMinutes() + 1); // For debug
     // As UTC timestamp:
     new_time = now.getTime();
-    //Is it in the past? Add 1 day
+    // Is it in the past? Add 1 day
     if (new_time < Date.now()) {
         console.log("In the past");
         new_time += 86400000;
+    // Or is it less than a minute? Add a minute
+    } else if ((new_time - Date.now()) < 60000 ) {
+        new_time += 60000;
     }
     console.log("Milliseconds till alarm " + (new_time - Date.now() ));
     let alarm_info = {
@@ -267,18 +279,14 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     }
 });
 
-chrome.runtime.onStartup.addListener(function() {
+var create_alarms = () => {
     chrome.alarms.getAll(function(alarms) {
         chrome.alarms.clearAll();
-        if (alarms.length < times.length) {
-            for (i = 0; i < times.length; i++) {
-                create_alarm(i);
-            }
-            chrome.alarms.getAll(function(alarms) {
-                console.log(alarms);
-            });
-        } else {
-            console.log(alarms);
+        for (i = 0; i < times.length; i++) {
+            create_alarm(i);
         }
+        chrome.alarms.getAll(function(alarms) {
+            console.log(alarms);
+        });
     });
-});
+ };
