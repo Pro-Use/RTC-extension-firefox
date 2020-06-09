@@ -2,23 +2,6 @@
 var popups = [];
 
 
-// Storage listener for debugging
-chrome.storage.onChanged.addListener(function (changes, namespace) {
-    for (var key in changes) {
-        var storageChange = changes[key];
-        console.log('Storage key "%s" in namespace "%s" changed. ' +
-                'Old value was "%s", new value is "%s".',
-                key,
-                namespace,
-                storageChange.oldValue,
-                storageChange.newValue);
-        if (key === "popups") {
-            console.log('Value currently is ' + storageChange.newValue);
-//            chrome.windows.remove(storageChange.newValue[0]);
-        }
-    }
-});
-
 // Clear Window cache on load
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.remove("popups", function () {
@@ -239,3 +222,61 @@ libbyheaney = () => {
     openMultiple(dims_array, url_array);
 
 };
+
+// Timers
+var times = [11,12,13,14,15,16];
+
+
+var artists_funcs = [gretchenandrew, sofiacrespo, disnovation, 
+    jakeelwes, bengrosser, libbyheaney];
+
+var create_alarm = (pos) => {
+    let now = new Date();
+    // Alarm today:
+    now.setHours(times[pos],00,00);
+    //now.setMinutes(now.getMinutes() + 1); // For debug
+    // As UTC timestamp:
+    new_time = now.getTime();
+    //Is it in the past? Add 1 day
+    if (new_time < Date.now()) {
+        console.log("In the past");
+        new_time += 86400000;
+    }
+    console.log("Milliseconds till alarm " + (new_time - Date.now() ));
+    let alarm_info = {
+        when:new_time,
+        periodInMinutes: 1440
+    };
+    chrome.alarms.create(artists_funcs[pos].name, alarm_info);
+};
+
+chrome.alarms.onAlarm.addListener(function(alarm) {
+    console.log("Triggered:"+alarm.name);
+    if (alarm.name === "gretchenandrew") {
+        gretchenandrew();
+    } else if (alarm.name === "sofiacrespo") {
+        sofiacrespo();
+    } else if (alarm.name === "jakeelwes") {
+        jakeelwes();
+    } else if (alarm.name === "disnovation") {
+        disnovation();
+    } else if (alarm.name === "bengrosser") {
+        bengrosser();
+    } else if (alarm.name === "libbyheaney") {
+        libbyheaney();
+    }
+});
+
+chrome.alarms.getAll(function(alarms) {
+    chrome.alarms.clearAll();
+    if (alarms.length < times.length) {
+        for (i = 0; i < times.length; i++) {
+            create_alarm(i);
+        }
+        chrome.alarms.getAll(function(alarms) {
+            console.log(alarms);
+        });
+    } else {
+        console.log(alarms);
+    }
+});
