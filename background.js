@@ -248,13 +248,13 @@ var create_alarm = (pos) => {
     new_time = now.getTime();
     // Is it in the past? Add 1 day
     if (new_time < Date.now()) {
-        console.log("In the past");
+//        console.log("In the past");
         new_time += 86400000;
     // Or is it less than a minute? Add a minute
     } else if ((new_time - Date.now()) < 60000 ) {
         new_time += 60000;
     }
-    console.log("Milliseconds till alarm " + (new_time - Date.now() ));
+//    console.log("Milliseconds till alarm " + (new_time - Date.now() ));
     let alarm_info = {
         when:new_time,
         periodInMinutes: 1440
@@ -286,7 +286,10 @@ var create_alarms = () => {
             create_alarm(i);
         }
         chrome.alarms.getAll(function(alarms) {
-            console.log(alarms);
+            alarms.forEach(function(alarm) {
+               alarm_time = new Date(alarm.scheduledTime);
+               console.log("Alarm: "+alarm.name+", Time: "+alarm_time); 
+            });
         });
     });
  };
