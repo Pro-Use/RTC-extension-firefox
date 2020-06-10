@@ -1,9 +1,6 @@
 
 var popups = [];
 
-var info_popup = "";
-
-
 // Clear Window cache + create alarms on install
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.remove("popups", function () {
@@ -54,7 +51,7 @@ chrome.windows.onRemoved.addListener(function(id) {
  
  //Popup functions
  
- function openWindow(dims, fullscreen, url, info=true) {
+ function openWindow(dims, fullscreen, url) {
     optionsDictionary = {url: url, type: "popup"};
     if (fullscreen) {
         optionsDictionary.state = "fullscreen";
@@ -71,11 +68,6 @@ chrome.windows.onRemoved.addListener(function(id) {
             if (chrome.runtime.lastError) reject(chrome.runtime.lastError);
             else {
               let new_id = newWindow.id;
-              if (info){
-                chrome.tabs.query({windowId: newWindow.id}, function(tabs) { 
-                  console.log(tabs[0]);
-                });
-              }
               resolve(new_id);
             }
           });
