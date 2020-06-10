@@ -27,12 +27,18 @@ closeall.onclick = () => closeAll();
 
 function closeAll() {
     chrome.storage.local.get(['popups'], function(result) {
-        popups = result.popups;
+        let popups = result.popups;
         if (popups !== undefined) {
             popups.forEach( function (popup){
                 console.log("Removing " + popup);
                 chrome.windows.remove(popup); 
             });
+        }
+    });
+    chrome.storage.local.get(['info_wid_id'], function(result) {
+        let info_wid_id = result.info_wid_id;
+        if (info_wid_id !== undefined) {
+            chrome.windows.remove(info_wid_id);
         }
     });
     chrome.storage.local.set({popups: []}, function () {

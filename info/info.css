@@ -1,12 +1,13 @@
 
-.rtc_info_button {
+#rtc_info_button {
     position: fixed;
     right: 5px;
     bottom: 5px;
     padding: 5px 11.3px;
     border: #000 solid 1px;
     border-radius: 15px;
+    background: white;
     text-align: center;
+    cursor: pointer;
 }
-
 

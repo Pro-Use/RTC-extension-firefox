@@ -33,19 +33,37 @@ chrome.windows.onRemoved.addListener(function(id) {
  chrome.extension.onConnect.addListener(function(port) {
       port.onMessage.addListener(function(msg) {
            console.log("message recieved: " + msg);
-           if (msg === "gretchenandrew") {
-               gretchenandrew();
-           } else if (msg === "sofiacrespo") {
-               sofiacrespo();
-           } else if (msg === "jakeelwes") {
-               jakeelwes();
-           } else if (msg === "disnovation") {
-               disnovation();
-           } else if (msg === "bengrosser") {
-               bengrosser();
-           } else if (msg === "libbyheaney") {
-               libbyheaney();
-           }
+           if (msg === "info_up") {
+               chrome.storage.local.get(['info_wid_id'], function(result) {
+                    let info_wid_id = result.info_wid_id;
+                    if (info_wid_id !== undefined) {
+                        chrome.windows.update(info_wid_id, {focused: true});
+                    }
+                });
+           } else if (msg === "info_down") {
+                chrome.storage.local.get(['info_wid_id'], function(result) {
+                    let info_wid_id = result.info_wid_id;
+                    if (info_wid_id !== undefined) {
+                        chrome.windows.update(info_wid_id, {state: "minimized"});
+                    }
+                });
+           } else {
+               chrome.storage.local.set({last_triggered: msg});
+               infoWindow(msg);
+                if (msg === "gretchenandrew") {
+                    gretchenandrew();
+                } else if (msg === "sofiacrespo") {
+                    sofiacrespo();
+                } else if (msg === "jakeelwes") {
+                    jakeelwes();
+                } else if (msg === "disnovation") {
+                    disnovation();
+                } else if (msg === "bengrosser") {
+                    bengrosser();
+                } else if (msg === "libbyheaney") {
+                    libbyheaney();
+             }
+           } 
       });
  });
  
@@ -113,6 +131,20 @@ function storePopupID(id) {
     });
 }
 
+infoWindow = async (artist) => {
+    let width = 500;
+    let height = 200;
+    let dims = [
+      (window.screen.availWidth - width) / 2,
+      (window.screen.availHeight - height) / 2,
+      width,
+      height
+    ];
+    let id = await openWindow(dims, false,"/info/info_window.html");
+    storePopupID(id);
+    chrome.storage.local.set({info_wid_id: id});
+};
+
 // Artist functions
 
 // Gretchen Andrew
@@ -162,7 +194,7 @@ sofiacrespo = async() => {
 
 disnovation = async() => {
   let dims = [0,0,window.screen.availWidth, window.screen.availHeight];
-  let id = await openWindow(dims, false,"http://predictiveartbot.com/");
+  let id = await openWindow(dims, false,"/popups/disnovation/predictiveartbot.html");
   storePopupID(id);
 };
 
@@ -273,6 +305,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 //    } else if (alarm.name === "libbyheaney") {
 //        libbyheaney();
 //    }
+      chrome.storage.local.set({last_triggered: alarm.name});
     } else {
         console.log("Missed " + alarm.name);
     }
