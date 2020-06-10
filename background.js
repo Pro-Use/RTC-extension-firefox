@@ -234,6 +234,7 @@ libbyheaney = () => {
 
 // Timers
 var times = [11,12,13,14,15,16];
+//var times = [1,2,3,4,5,6]; // For debug
 
 
 var artists_funcs = [gretchenandrew, sofiacrespo, disnovation, 
@@ -243,7 +244,7 @@ var create_alarm = (pos) => {
     let now = new Date();
     // Alarm today:
     now.setHours(times[pos],00,00);
-    //now.setMinutes(now.getMinutes() + 1); // For debug
+//    now.setMinutes(now.getMinutes() + times[pos]); // For debug
     // As UTC timestamp:
     new_time = now.getTime();
     // Is it in the past? Add 1 day
@@ -264,19 +265,32 @@ var create_alarm = (pos) => {
 
 chrome.alarms.onAlarm.addListener(function(alarm) {
     console.log("Triggered:"+alarm.name);
-    if (alarm.name === "gretchenandrew") {
-        gretchenandrew();
-    } else if (alarm.name === "sofiacrespo") {
-        sofiacrespo();
-    } else if (alarm.name === "jakeelwes") {
-        jakeelwes();
-    } else if (alarm.name === "disnovation") {
-        disnovation();
-    } else if (alarm.name === "bengrosser") {
-        bengrosser();
-    } else if (alarm.name === "libbyheaney") {
-        libbyheaney();
+    alarm_offset = Date.now() - alarm.scheduledTime;
+    if (alarm_offset < 66000) {
+//    if (alarm.name === "gretchenandrew") {
+//        gretchenandrew();
+//    } else if (alarm.name === "sofiacrespo") {
+//        sofiacrespo();
+//    } else if (alarm.name === "jakeelwes") {
+//        jakeelwes();
+//    } else if (alarm.name === "disnovation") {
+//        disnovation();
+//    } else if (alarm.name === "bengrosser") {
+//        bengrosser();
+//    } else if (alarm.name === "libbyheaney") {
+//        libbyheaney();
+//    }
+    } else {
+        console.log("Missed " + alarm.name);
     }
+    chrome.alarms.getAll(function(alarms) {
+        alarms.forEach(function(saved_alarm) {
+            if (saved_alarm.name === alarm.name) {
+                alarm_time = new Date(saved_alarm.scheduledTime);
+                console.log("Alarm: "+saved_alarm.name+", Next Time: "+alarm_time);
+            }
+        });
+    });
 });
 
 var create_alarms = () => {
@@ -293,3 +307,4 @@ var create_alarms = () => {
         });
     });
  };
+ 
