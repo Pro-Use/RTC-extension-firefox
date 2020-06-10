@@ -197,7 +197,7 @@ bengrosser = async() => {
       width,
       height
   ];
-  let id = await openWindow(dims, false,"https://tracingyou.bengrosser.com");
+  let id = await openWindow(dims, false,"popups/bengrosser/tracingyou.html");
   storePopupID(id);
 };
 
