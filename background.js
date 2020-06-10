@@ -1,6 +1,8 @@
 
 var popups = [];
 
+var info_popup = "";
+
 
 // Clear Window cache + create alarms on install
 chrome.runtime.onInstalled.addListener(function () {
@@ -52,7 +54,7 @@ chrome.windows.onRemoved.addListener(function(id) {
  
  //Popup functions
  
- function openWindow(dims, fullscreen, url) {
+ function openWindow(dims, fullscreen, url, info=true) {
     optionsDictionary = {url: url, type: "popup"};
     if (fullscreen) {
         optionsDictionary.state = "fullscreen";
@@ -65,19 +67,18 @@ chrome.windows.onRemoved.addListener(function(id) {
     }
     return new Promise((resolve, reject) => {
         try {
-            chrome.windows.create(optionsDictionary, function (newWindow) {
-              if (chrome.runtime.lastError) reject(chrome.runtime.lastError);
-                else {
-                  let new_id = newWindow.id;
-                  chrome.windows.get(new_id, function (wid) {
-                    if (fullscreen && wid.state != "fullscreen") {
-                      console.log("window not fullscreen but should be...");
-                      chrome.windows.update(new_id, {state: "fullscreen"});
-                    }
-                  });
-                  resolve(new_id);
-                }
-              });
+          chrome.windows.create(optionsDictionary, function (newWindow) {
+            if (chrome.runtime.lastError) reject(chrome.runtime.lastError);
+            else {
+              let new_id = newWindow.id;
+              if (info){
+                chrome.tabs.query({windowId: newWindow.id}, function(tabs) { 
+                  console.log(tabs[0]);
+                });
+              }
+              resolve(new_id);
+            }
+          });
         } catch (error) {
             reject (error);
         };
