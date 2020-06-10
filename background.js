@@ -224,31 +224,31 @@ libbyheaney = () => {
 };
 
 joelsimon = async () => {
-    console.log('joelsimon')
-    const round = (arr) => arr.map(Math.floor)
-    const s3_root = 'https://joels-share.s3.amazonaws.com/arebyte'
-    const { availWidth:w, availHeight:h } = window.screen
-    const video_sizes = [[714, 204], [806, 204]]
-    let id1, id2, id3
-    let start = [.3 * w, .3 * h]
-    let dims = [...start, ...video_sizes[0]]
+    console.log('joelsimon');;
+    const round = (arr) => arr.map(Math.floor);
+    const s3_root = 'https://joels-share.s3.amazonaws.com/arebyte';
+    const { availWidth:w, availHeight:h } = window.screen;
+    const video_sizes = [[714, 204], [806, 204]];
+    let id1, id2, id3;
+    let start = [.3 * w, .3 * h];
+    let dims = [...start, ...video_sizes[0]];
     
-    id1 = await openWindow(round(dims), false, `${s3_root}/vid/title_a.mp4`)
-    storePopupID(id1)
+    id1 = await openWindow(round(dims), false, `${s3_root}/vid/title_a.mp4`);
+    storePopupID(id1);
 
     const offset = 150
     setTimeout(async () => {
-        let dims = [start[0]+offset, start[1]+offset, ...video_sizes[1]]
-        id2 = await openWindow(round(dims), false, `${s3_root}/vid/title_b.mp4`)
-        storePopupID(id2)
-    }, 3000)
+        let dims = [start[0]+offset, start[1]+offset, ...video_sizes[1]];
+        id2 = await openWindow(round(dims), false, `${s3_root}/vid/title_b.mp4`);
+        storePopupID(id2);
+    }, 3000);
 
     setTimeout(async () => {
-        chrome.windows.remove(id1)
-        chrome.windows.remove(id2)
-        const r = .5 * w
-        dims = [r/2, (h-r)/2, r, r]
-        id3 = await openWindow(round(dims), false, `popups/joelsimon/index.html`)
-        storePopupID(id3)
-    }, 6000)
-}
+        chrome.windows.remove(id1);
+        chrome.windows.remove(id2);
+        const r = .5 * w;
+        dims = [r/2, (h-r)/2, r, r];
+        id3 = await openWindow(round(dims), false, `popups/joelsimon/index.html`);
+        storePopupID(id3);
+    }, 6000);
+};
