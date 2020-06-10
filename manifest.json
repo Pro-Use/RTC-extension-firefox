@@ -2,7 +2,7 @@
     "name": "Real Time Constraints",
     "version": "0.1",
     "description": "Arebyte - Real Time Constraints",
-    "permissions": ["storage", "tabs", "alarms"],
+    "permissions": ["storage", "declarativeContent", "alarms"],
     "background": {
       "scripts": ["background.js"],
       "persistent": false
