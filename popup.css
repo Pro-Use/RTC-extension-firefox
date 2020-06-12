@@ -1,3 +1,8 @@
+body {
+    font-size: 12px;
+    font-family: Roboto, Arial, sans-serif;
+}
+
 .button-conatiner {
     border: #000 solid 2px;
     border-radius: 20px;
