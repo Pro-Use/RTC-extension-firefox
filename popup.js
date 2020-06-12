@@ -7,7 +7,10 @@
 const buttons = document.querySelectorAll('.send');
 
 buttons.forEach(function(currentBtn){
-  currentBtn.onclick = () =>  port.postMessage(currentBtn.id);
+  currentBtn.onclick = () =>  {
+      port.postMessage(currentBtn.id);
+      window.close();
+  };
 });
 
 // Close all button handler
