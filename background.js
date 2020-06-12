@@ -33,20 +33,26 @@ chrome.windows.onRemoved.addListener(function(id) {
  chrome.extension.onConnect.addListener(function(port) {
       port.onMessage.addListener(function(msg) {
            console.log("message recieved: " + msg);
-           if (msg === "info_up") {
+           if (msg.includes("bio")) {
+               msg = msg.split("-");
+               url = "bio/bio.html";
+               if (msg.length === 2) {
+                   url += "#" + msg[1];
+               }
+           } else if (msg === "info_up") {
                chrome.storage.local.get(['info_wid_id'], function(result) {
                     let info_wid_id = result.info_wid_id;
                     if (info_wid_id !== undefined) {
                         chrome.windows.update(info_wid_id, {focused: true});
                     }
                 });
-           } else if (msg === "info_down") {
-                chrome.storage.local.get(['info_wid_id'], function(result) {
-                    let info_wid_id = result.info_wid_id;
-                    if (info_wid_id !== undefined) {
-                        chrome.windows.update(info_wid_id, {state: "minimized"});
-                    }
-                });
+//           } else if (msg === "info_down") {
+//                chrome.storage.local.get(['info_wid_id'], function(result) {
+//                    let info_wid_id = result.info_wid_id;
+//                    if (info_wid_id !== undefined) {
+//                        chrome.windows.update(info_wid_id, {state: "minimized"});
+//                    }
+//                });
            } else if (msg === "ctrl-link-work") {
                allArtistsWindow();
            } else {
@@ -64,7 +70,9 @@ chrome.windows.onRemoved.addListener(function(id) {
                     bengrosser();
                 } else if (msg === "libbyheaney") {
                     libbyheaney();
-             }
+                } else if (msg === "joelsimon") {
+                    joelsimon();
+                }
            } 
       });
  });
@@ -306,7 +314,7 @@ var times = [11,12,13,14,15,16];
 
 
 var artists_funcs = [gretchenandrew, sofiacrespo, disnovation, 
-    jakeelwes, bengrosser, libbyheaney];
+    jakeelwes, bengrosser, libbyheaney, joelsimon];
 
 var create_alarm = (pos) => {
     let now = new Date();
@@ -347,8 +355,11 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
             bengrosser();
         } else if (alarm.name === "libbyheaney") {
             libbyheaney();
+        }  else if (alarm.name === "joelsimon") {
+            joelsimon();
         }
-      chrome.storage.local.set({last_triggered: alarm.name});
+        
+        chrome.storage.local.set({last_triggered: alarm.name});
     } else {
         console.log("Missed " + alarm.name);
     }
