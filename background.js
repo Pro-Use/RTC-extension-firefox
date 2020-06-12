@@ -46,7 +46,7 @@ chrome.windows.onRemoved.addListener(function(id) {
                         chrome.windows.update(info_wid_id, {focused: true});
                     }
                 });
-//           } else if (msg === "info_down") {
+           } else if (msg === "info_down") {
 //                chrome.storage.local.get(['info_wid_id'], function(result) {
 //                    let info_wid_id = result.info_wid_id;
 //                    if (info_wid_id !== undefined) {
@@ -55,6 +55,8 @@ chrome.windows.onRemoved.addListener(function(id) {
 //                });
            } else if (msg === "ctrl-link-work") {
                allArtistsWindow();
+           } else if (msg === "ctrl-link") {
+               
            } else {
                chrome.storage.local.set({last_triggered: msg});
                infoWindow(msg);
@@ -210,13 +212,13 @@ gretchenandrew = () => {
 };
 
 sofiacrespo = async() => {
-  let dims = [0,0,window.screen.availWidth, window.screen.availHeight];
-  let id = await openWindow(dims, false,"https://darkfractures.com/example/index.html");
+  let dims = [0,0,window.screen.availWidth, window.screen.availHeight - 20];
+  let id = await openWindow(dims, false,"/popups/sofiacrespo/artificialremnants.html");
   storePopupID(id);
 };
 
 disnovation = async() => {
-  let dims = [0,0,window.screen.availWidth, window.screen.availHeight];
+  let dims = [0,0,window.screen.availWidth, window.screen.availHeight - 20];
   let id = await openWindow(dims, false,"/popups/disnovation/predictiveartbot.html");
   storePopupID(id);
 };
