@@ -1,7 +1,7 @@
 
 //Background comms
  var port = chrome.extension.connect({
-      name: "Sample Communication"
+      name: "RTC_Comms"
  });
 
 const buttons = document.querySelectorAll('.send');
