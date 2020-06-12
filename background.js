@@ -87,7 +87,7 @@ chrome.windows.onRemoved.addListener(function(id) {
         optionsDictionary.state = "fullscreen";
     } else {
         optionsDictionary.left = dims[0];
-        optionsDictionary.top = dims[1];
+        optionsDictionary.top = parseInt(dims[1]);
         optionsDictionary.width = dims[2];
         optionsDictionary.height = dims[3];
 
