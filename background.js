@@ -47,6 +47,8 @@ chrome.windows.onRemoved.addListener(function(id) {
                         chrome.windows.update(info_wid_id, {state: "minimized"});
                     }
                 });
+           } else if (msg === "ctrl-link-work") {
+               allArtistsWindow();
            } else {
                chrome.storage.local.set({last_triggered: msg});
                infoWindow(msg);
@@ -145,6 +147,19 @@ infoWindow = async (artist) => {
     chrome.storage.local.set({info_wid_id: id});
 };
 
+allArtistsWindow = async (artists) => {
+    let width = 500;
+    let height = window.screen.availHeight -200;
+    let dims = [
+      (window.screen.availWidth - width) / 2,
+      (window.screen.availHeight - height) / 2,
+      width,
+      height
+    ];
+    let id = await openWindow(dims, false,"all_artists.html");
+    storePopupID(id);
+    chrome.storage.local.set({info_wid_id: id});
+};
 // Artist functions
 
 // Gretchen Andrew
