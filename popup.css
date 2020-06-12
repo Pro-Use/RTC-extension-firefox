@@ -57,13 +57,33 @@ div#ctrl-link {
     flex-wrap: wrap;
 }
 
+#bio-popup {
+    width: 250px;
+    position: relative;
+    left: 135px;
+    top: -70px;
+    margin-bottom: -70px;
+    background: #fff;
+}
+
+#bios {
+    font-size: 1.2em;
+    padding: 0px 10px 20px;
+}
+
+div#ctrl-link-bio {
+    width: -webkit-fill-available;
+    padding: 0;
+}
+
 #close-popup {
     position: relative;
     width: 30%;
     height: 20%;
-    left: 60%;
-    bottom: -10px;
+    left: 10%;
+    bottom: 10px;
     background: #FFF;
+    margin-bottom: -30px;
 }
 
 .popup-text {
@@ -144,6 +164,8 @@ div#popup-time {
     margin-right: 50px;
     margin-bottom: 0px;
     background: #fff;
+    padding: 15px;
+    font-size: 1.2em;
 }
 
 .c-l-2 {

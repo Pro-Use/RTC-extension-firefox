@@ -307,19 +307,19 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     console.log("Triggered:"+alarm.name);
     alarm_offset = Date.now() - alarm.scheduledTime;
     if (alarm_offset < 66000) {
-//    if (alarm.name === "gretchenandrew") {
-//        gretchenandrew();
-//    } else if (alarm.name === "sofiacrespo") {
-//        sofiacrespo();
-//    } else if (alarm.name === "jakeelwes") {
-//        jakeelwes();
-//    } else if (alarm.name === "disnovation") {
-//        disnovation();
-//    } else if (alarm.name === "bengrosser") {
-//        bengrosser();
-//    } else if (alarm.name === "libbyheaney") {
-//        libbyheaney();
-//    }
+        if (alarm.name === "gretchenandrew") {
+            gretchenandrew();
+        } else if (alarm.name === "sofiacrespo") {
+            sofiacrespo();
+        } else if (alarm.name === "jakeelwes") {
+            jakeelwes();
+        } else if (alarm.name === "disnovation") {
+            disnovation();
+        } else if (alarm.name === "bengrosser") {
+            bengrosser();
+        } else if (alarm.name === "libbyheaney") {
+            libbyheaney();
+        }
       chrome.storage.local.set({last_triggered: alarm.name});
     } else {
         console.log("Missed " + alarm.name);
