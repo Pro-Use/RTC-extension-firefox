@@ -3,6 +3,15 @@ body {
     font-family: Roboto, Arial, sans-serif;
 }
 
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #c2c2c2;
+}
+
 .button-conatiner {
     border: #000 solid 2px;
     border-radius: 20px;
@@ -80,6 +89,12 @@ div#ctrl-link-bio {
     padding: 0;
 }
 
+img#arebyte_logo {
+    height: 1.2em;
+    margin-left: 3px;
+    margin-bottom: -3px;
+}
+
 #close-popup {
     position: relative;
     width: 30%;
@@ -88,6 +103,10 @@ div#ctrl-link-bio {
     bottom: 10px;
     background: #FFF;
     margin-bottom: -30px;
+}
+
+#close-button {
+    margin-top: -10px;
 }
 
 .popup-text {
@@ -104,6 +123,7 @@ div#ctrl-link-bio {
 [id^="popup-"]  {
     flex-basis: 100%;
     line-height: 2em;
+    padding-left: 2px;
 }
 
 div#popup-work-title {
@@ -112,8 +132,10 @@ div#popup-work-title {
 
 div#popup-time {
     font-style: italic;
+    margin-top: 5px;
+    border-top: #000 solid 2px;
+    padding-top: 8px;
 }
-
 
 .break {
     flex-basis: 100%;
@@ -168,7 +190,7 @@ div#popup-time {
     margin-right: 50px;
     margin-bottom: 0px;
     background: #fff;
-    padding: 15px;
+    padding: 0px 15px;
     font-size: 1.2em;
 }
 

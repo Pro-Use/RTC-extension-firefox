@@ -48,12 +48,15 @@ var work_info = {
     disnovation:["DISNOVATION.ORG","Predictive Art Bot"],
     jakeelwes:["Jake Elwes","Zizi - Queering the Dataset"],
     bengrosser:["Ben Grosser","Tracing You"],
-    libbyheaney:["Libby Heaney","Elvis"],   
+    libbyheaney:["Libby Heaney","Elvis"],
+    joelsimon:["Joel Simon", "Artbreeder"]
 };
 
 var title = document.getElementById('popup-work-title');
 var artist = document.getElementById('popup-artist');
 var time = document.getElementById('popup-time');
+
+var next_ts = null;
 
 chrome.alarms.getAll(function (alarms) {
     alarm_times = [];
@@ -65,7 +68,8 @@ chrome.alarms.getAll(function (alarms) {
     for (i = 0; i < alarms.length; i++) {
         alarm = alarms[i];
         if (alarm.scheduledTime === next_alarm_time){
-            alarm_time = new Date(alarm.scheduledTime);
+            next_ts = alarm.scheduledTime;
+            alarm_time = new Date(next_ts);
             info = work_info[alarm.name];
             console.log(info);
             artist.textContent = info[0];
@@ -75,3 +79,25 @@ chrome.alarms.getAll(function (alarms) {
         }        
     }
 });
+
+var x = setInterval(function() {
+    // Get today's date and time
+    var now = new Date().getTime();
+
+    // Find the distance between now and the count down date
+    var distance = next_ts - now;
+
+    // Time calculations for days, hours, minutes and seconds
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    // Display the result in the element with id="demo"
+    countdown_str = hours + "h " + minutes + "m " + seconds + "s ";
+    document.getElementById("timer").innerHTML = countdown_str;
+
+    // If the count down is finished, write some text
+    if (distance < 0) {
+      clearInterval(x);
+      document.getElementById("demo").innerHTML = "EXPIRED";
+    }
+}, 1000);
