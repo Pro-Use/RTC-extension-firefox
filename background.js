@@ -345,7 +345,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     console.log("Triggered:"+alarm.name);
     alarm_offset = Date.now() - alarm.scheduledTime;
     if (alarm_offset < 66000) {
-        infoWindow(msg);
+        infoWindow(alarm.name);
         if (alarm.name === "gretchenandrew") {
             gretchenandrew();
         } else if (alarm.name === "sofiacrespo") {
