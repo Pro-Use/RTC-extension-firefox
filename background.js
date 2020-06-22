@@ -390,3 +390,25 @@ var create_alarms = () => {
         });
     });
  };
+
+// Icon timer overlay
+chrome.browserAction.setBadgeBackgroundColor({color:[0,0,0,1]});
+
+chrome.alarms.getAll(function (alarms) {
+    alarm_times = [];
+    alarms.forEach(function(alarm) {
+        alarm_times.push(alarm.scheduledTime);
+    });
+    alarm_times.sort(function(a, b){return a - b});
+    next_alarm_time = alarm_times[0];
+    for (i = 0; i < alarms.length; i++) {
+        alarm = alarms[i];
+        if (alarm.scheduledTime === next_alarm_time){
+            let next_ts = alarm.scheduledTime;
+            let alarm_time = new Date(next_ts);
+            let hour =  alarm_time.getHours();
+            chrome.browserAction.setBadgeText({text:hour.toString()+":00"});
+            break;
+        }        
+    }
+});
