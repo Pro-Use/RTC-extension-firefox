@@ -1,10 +1,18 @@
+//Design close
+let buttons = document.querySelectorAll('.close');
+
+buttons.forEach(function(currentBtn){
+  currentBtn.onclick = () =>  {
+      window.close();
+  };
+});
 
 //Background comms
  var port = chrome.extension.connect({
       name: "RTC_Comms"
  });
 
-const buttons = document.querySelectorAll('.send');
+buttons = document.querySelectorAll('.send');
 
 buttons.forEach(function(currentBtn){
   currentBtn.onclick = () =>  {
@@ -98,6 +106,5 @@ var x = setInterval(function() {
     // If the count down is finished, write some text
     if (distance < 0) {
       clearInterval(x);
-      document.getElementById("demo").innerHTML = "EXPIRED";
     }
 }, 1000);
