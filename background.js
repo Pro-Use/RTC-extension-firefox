@@ -35,10 +35,11 @@ chrome.windows.onRemoved.addListener(function(id) {
            console.log("message recieved: " + msg);
            if (msg.includes("bio")) {
                msg = msg.split("-");
-               url = "bio/bio.html";
+               let artist = null;
                if (msg.length === 2) {
-                   url += "#" + msg[1];
+                   artist = msg[1];
                }
+               prWindow(artist);
            } else if (msg === "info_up") {
                chrome.storage.local.get(['info_wid_id'], function(result) {
                     let info_wid_id = result.info_wid_id;
@@ -153,6 +154,22 @@ infoWindow = async (artist) => {
       height
     ];
     let id = await openWindow(dims, false,"/info/info_window.html");
+    storePopupID(id);
+    chrome.storage.local.set({info_wid_id: id});
+};
+
+prWindow = async (artist) => {
+    let width = 800;
+    let height = window.screen.availHeight - 100;
+    let dims = [
+      (window.screen.availWidth - width) / 2,
+      (window.screen.availHeight - height) / 2,
+      width,
+      height
+    ];
+    url = "/info/press_release_window.html";
+    if (artist) url += "#" + artist;
+    let id = await openWindow(dims, false, url);
     storePopupID(id);
     chrome.storage.local.set({info_wid_id: id});
 };
