@@ -59,8 +59,8 @@ chrome.windows.onRemoved.addListener(function(id) {
            } else if (msg === "ctrl-link") {
                
            } else {
-               chrome.storage.local.set({last_triggered: msg});
-               infoWindow(msg);
+                chrome.storage.local.set({last_triggered: msg});
+                infoWindow(msg);
                 if (msg === "gretchenandrew") {
                     gretchenandrew();
                 } else if (msg === "sofiacrespo") {
@@ -329,7 +329,8 @@ joelsimon = async () => {
 
 // Timers
 var times = [11,12,13,14,15,16];
-//var times = [1,2,3,4,5,6]; // For debug
+//var times = [2];
+//,2,3,4,5,6]; // For debug
 
 
 var artists_funcs = [gretchenandrew, sofiacrespo, disnovation, 
@@ -358,28 +359,32 @@ var create_alarm = (pos) => {
     chrome.alarms.create(artists_funcs[pos].name, alarm_info);
 };
 
-chrome.alarms.onAlarm.addListener(function(alarm) {
+chrome.alarms.onAlarm.addListener(async function(alarm) {
     console.log("Triggered:"+alarm.name);
     alarm_offset = Date.now() - alarm.scheduledTime;
     if (alarm_offset < 66000) {
-        infoWindow(alarm.name);
-        if (alarm.name === "gretchenandrew") {
-            gretchenandrew();
-        } else if (alarm.name === "sofiacrespo") {
-            sofiacrespo();
-        } else if (alarm.name === "jakeelwes") {
-            jakeelwes();
-        } else if (alarm.name === "disnovation") {
-            disnovation();
-        } else if (alarm.name === "bengrosser") {
-            bengrosser();
-        } else if (alarm.name === "libbyheaney") {
-            libbyheaney();
-        }  else if (alarm.name === "joelsimon") {
-            joelsimon();
+        if (alarm.name === "countdown") {
+            await icon_timer(alarm.scheduledTime);
+        } else {
+            infoWindow(alarm.name);
+            if (alarm.name === "gretchenandrew") {
+                gretchenandrew();
+            } else if (alarm.name === "sofiacrespo") {
+                sofiacrespo();
+            } else if (alarm.name === "jakeelwes") {
+                jakeelwes();
+            } else if (alarm.name === "disnovation") {
+                disnovation();
+            } else if (alarm.name === "bengrosser") {
+                bengrosser();
+            } else if (alarm.name === "libbyheaney") {
+                libbyheaney();
+            }  else if (alarm.name === "joelsimon") {
+                joelsimon();
+            }
+            update_icon_text();
+            chrome.storage.local.set({last_triggered: alarm.name});
         }
-        
-        chrome.storage.local.set({last_triggered: alarm.name});
     } else {
         console.log("Missed " + alarm.name);
     }
@@ -394,38 +399,66 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 });
 
 var create_alarms = () => {
+    chrome.alarms.clear("countdown");
+    chrome.alarms.clearAll();
+    for (i = 0; i < times.length; i++) {
+        create_alarm(i);
+    }
     chrome.alarms.getAll(function(alarms) {
-        chrome.alarms.clearAll();
-        for (i = 0; i < times.length; i++) {
-            create_alarm(i);
-        }
-        chrome.alarms.getAll(function(alarms) {
-            alarms.forEach(function(alarm) {
-               alarm_time = new Date(alarm.scheduledTime);
-               console.log("Alarm: "+alarm.name+", Time: "+alarm_time); 
-            });
+        alarms.forEach(function(alarm) {
+           alarm_time = new Date(alarm.scheduledTime);
+           console.log("Alarm: "+alarm.name+", Time: "+alarm_time); 
         });
     });
  };
 
-// Icon timer overlay
-chrome.browserAction.setBadgeBackgroundColor({color:[0,0,0,1]});
-
-chrome.alarms.getAll(function (alarms) {
-    alarm_times = [];
-    alarms.forEach(function(alarm) {
-        alarm_times.push(alarm.scheduledTime);
+var update_icon_text = () => {
+    chrome.alarms.getAll(function (alarms) {
+        alarm_times = [];
+        alarms.forEach(function(alarm) {
+            if (alarm.name !== "countdown") {
+                alarm_times.push(alarm.scheduledTime);
+            }
+        });
+        alarm_times.sort(function(a, b){return a - b;});
+        next_alarm_time = alarm_times[0];
+        for (i = 0; i < alarms.length; i++) {
+            alarm = alarms[i];
+            if (alarm.scheduledTime === next_alarm_time){
+                let next_ts = alarm.scheduledTime;
+                let alarm_time = new Date(next_ts);
+                let hour =  alarm_time.getHours();
+                chrome.browserAction.setBadgeBackgroundColor({color:[0,0,0,1]});
+                chrome.browserAction.setBadgeText({text:hour.toString()+":00"});
+                chrome.alarms.create("countdown", {when: alarm.scheduledTime - 60000});
+                // Debug
+                chrome.alarms.get("countdown", function(alarm) {
+                    console.log(alarm.name + " - " + new Date(alarm.scheduledTime)); 
+                 });
+                break;
+            }        
+        }
     });
-    alarm_times.sort(function(a, b){return a - b});
-    next_alarm_time = alarm_times[0];
-    for (i = 0; i < alarms.length; i++) {
-        alarm = alarms[i];
-        if (alarm.scheduledTime === next_alarm_time){
-            let next_ts = alarm.scheduledTime;
-            let alarm_time = new Date(next_ts);
-            let hour =  alarm_time.getHours();
-            chrome.browserAction.setBadgeText({text:hour.toString()+":00"});
-            break;
-        }        
-    }
-});
+ };
+ 
+var icon_timer = async (time) => {
+    var sleep = (ms) => {return new Promise(resolve => setTimeout(resolve, ms)); };
+    console.log("starting countdown");
+    work_trigger = time + 5900;
+    chrome.browserAction.setBadgeBackgroundColor({color:[1,0,0,1]});
+    while (Date.now() < work_trigger) {
+        let countdown = (work_trigger - Date.now()) / 100;
+        let countdown_str = countdown.toString();
+        console.log(countdown_str);
+        chrome.browserAction.setBadgeText({text:countdown_str.slice(0,4)});
+        await sleep(300);
+
+    };
+    chrome.browserAction.setBadgeBackgroundColor({color:[0,0,0,1]});
+    console.log("timer complete");
+};
+
+    
+
+// Icon timer overlay
+update_icon_text();

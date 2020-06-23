@@ -45,9 +45,7 @@ function closeAll() {
             chrome.windows.remove(info_wid_id);
         }
     });
-    chrome.storage.local.set({popups: []}, function () {
-        console.log(popups);
-    });
+    chrome.storage.local.set({popups: []});
 }
 
 var work_info = {
@@ -69,7 +67,9 @@ var next_ts = null;
 chrome.alarms.getAll(function (alarms) {
     alarm_times = [];
     alarms.forEach(function(alarm) {
-        alarm_times.push(alarm.scheduledTime);
+        if (alarm.name !== "countdown") {
+            alarm_times.push(alarm.scheduledTime);
+        }
     });
     alarm_times.sort(function(a, b){return a - b});
     next_alarm_time = alarm_times[0];
