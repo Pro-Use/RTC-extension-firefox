@@ -31,7 +31,7 @@ chrome.windows.onRemoved.addListener(function(id) {
 
 // Popup comms
  chrome.extension.onConnect.addListener(function(port) {
-      port.onMessage.addListener(function(msg) {
+      port.onMessage.addListener(async function(msg) {
            console.log("message recieved: " + msg);
            if (msg.includes("bio")) {
                msg = msg.split("-");
@@ -47,20 +47,13 @@ chrome.windows.onRemoved.addListener(function(id) {
                         chrome.windows.update(info_wid_id, {focused: true});
                     }
                 });
-           } else if (msg === "info_down") {
-//                chrome.storage.local.get(['info_wid_id'], function(result) {
-//                    let info_wid_id = result.info_wid_id;
-//                    if (info_wid_id !== undefined) {
-//                        chrome.windows.update(info_wid_id, {state: "minimized"});
-//                    }
-//                });
            } else if (msg === "ctrl-link-work") {
                allArtistsWindow();
            } else if (msg === "ctrl-link") {
                
            } else {
                 chrome.storage.local.set({last_triggered: msg});
-                infoWindow(msg);
+                await infoWindow(msg);
                 if (msg === "gretchenandrew") {
                     gretchenandrew();
                 } else if (msg === "sofiacrespo") {
@@ -76,6 +69,7 @@ chrome.windows.onRemoved.addListener(function(id) {
                 } else if (msg === "joelsimon") {
                     joelsimon();
                 }
+//                
            } 
       });
  });
@@ -123,6 +117,8 @@ async function openMultiple(dims, urls) {
         new_popups.push(id);
       };
     console.log("Func ended popups: " + new_popups + ", length :" + new_popups.length);
+    let close_id = await closeAllWindow();
+    new_popups.push(close_id);
     storePopupID(new_popups);
 }
 
@@ -154,7 +150,7 @@ infoWindow = async (artist) => {
       height
     ];
     let id = await openWindow(dims, false,"/info/info_window.html");
-    storePopupID(id);
+//    storePopupID(id);
     chrome.storage.local.set({info_wid_id: id});
 };
 
@@ -172,6 +168,21 @@ prWindow = async (artist) => {
     let id = await openWindow(dims, false, url);
     storePopupID(id);
     chrome.storage.local.set({info_wid_id: id});
+};
+
+closeAllWindow = async() => {
+    let width = 50;
+    let height = 40;
+    let dims = [
+      window.screen.availWidth - (width + 10),
+      window.screen.availHeight - (height + 40),
+      width,
+      height
+    ];
+    url = "/info/close_all_window.html";
+    let id = await openWindow(dims, false, url);
+//    storePopupID(id);
+    return id;
 };
 
 allArtistsWindow = async (artists) => {
@@ -328,7 +339,7 @@ joelsimon = async () => {
 };
 
 // Timers
-var times = [11,12,13,14,15,16];
+var times = [11,12,13,14,15,16,17];
 //var times = [2];
 //,2,3,4,5,6]; // For debug
 
@@ -359,12 +370,12 @@ var create_alarm = (pos) => {
     chrome.alarms.create(artists_funcs[pos].name, alarm_info);
 };
 
-chrome.alarms.onAlarm.addListener(async function(alarm) {
+chrome.alarms.onAlarm.addListener(function(alarm) {
     console.log("Triggered:"+alarm.name);
     alarm_offset = Date.now() - alarm.scheduledTime;
     if (alarm_offset < 66000) {
         if (alarm.name === "countdown") {
-            await icon_timer(alarm.scheduledTime);
+            icon_timer(alarm.scheduledTime);
         } else {
             infoWindow(alarm.name);
             if (alarm.name === "gretchenandrew") {
@@ -444,7 +455,7 @@ var update_icon_text = () => {
 var icon_timer = async (time) => {
     var sleep = (ms) => {return new Promise(resolve => setTimeout(resolve, ms)); };
     console.log("starting countdown");
-    work_trigger = time + 5900;
+    work_trigger = time + 59000;
     chrome.browserAction.setBadgeBackgroundColor({color:[1,0,0,1]});
     while (Date.now() < work_trigger) {
         let countdown = (work_trigger - Date.now()) / 100;

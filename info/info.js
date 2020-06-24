@@ -9,4 +9,3 @@ document.body.appendChild(info_div);
  });
 
 info_div.onmouseover = () => port.postMessage("info_up");
-info_div.onmouseout = () => port.postMessage("info_down");
