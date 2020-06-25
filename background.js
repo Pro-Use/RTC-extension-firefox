@@ -69,7 +69,7 @@ chrome.windows.onRemoved.addListener(function(id) {
                 } else if (msg === "joelsimon") {
                     joelsimon();
                 }
-//                
+                titleWindow(); 
            } 
       });
  });
@@ -139,6 +139,19 @@ function storePopupID(id) {
         });
     });
 }
+
+titleWindow = async () => {
+    let width = 450;
+    let height = 10;
+    let dims = [
+      10,
+      10,
+      width,
+      height
+    ];
+    let id = await openWindow(dims, false,"/info/title_window.html");
+    storePopupID(id);
+};
 
 infoWindow = async (artist) => {
     let width = 450;
@@ -377,6 +390,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         if (alarm.name === "countdown") {
             icon_timer(alarm.scheduledTime);
         } else {
+            chrome.storage.local.set({last_triggered: alarm.name});
             infoWindow(alarm.name);
             if (alarm.name === "gretchenandrew") {
                 gretchenandrew();
@@ -393,11 +407,12 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
             }  else if (alarm.name === "joelsimon") {
                 joelsimon();
             }
+            titleWindow();
             update_icon_text();
-            chrome.storage.local.set({last_triggered: alarm.name});
         }
     } else {
         console.log("Missed " + alarm.name);
+        update_icon_text();
     }
     chrome.alarms.getAll(function(alarms) {
         alarms.forEach(function(saved_alarm) {
@@ -439,13 +454,19 @@ var update_icon_text = () => {
                 let next_ts = alarm.scheduledTime;
                 let alarm_time = new Date(next_ts);
                 let hour =  alarm_time.getHours();
+                if (hour < 12) {
+                    var time_txt = " am";
+                } else {
+                    hour -= 12;
+                    var time_txt = " pm";
+                }
                 chrome.browserAction.setBadgeBackgroundColor({color:[0,0,0,1]});
-                chrome.browserAction.setBadgeText({text:hour.toString()+":00"});
-                chrome.alarms.create("countdown", {when: alarm.scheduledTime - 60000});
-                // Debug
-                chrome.alarms.get("countdown", function(alarm) {
-                    console.log(alarm.name + " - " + new Date(alarm.scheduledTime)); 
-                 });
+                chrome.browserAction.setBadgeText({text:hour.toString()+time_txt});
+//                chrome.alarms.create("countdown", {when: alarm.scheduledTime - 60000});
+//                // Debug
+//                chrome.alarms.get("countdown", function(alarm) {
+//                    console.log(alarm.name + " - " + new Date(alarm.scheduledTime)); 
+//                 });
                 break;
             }        
         }

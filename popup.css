@@ -113,6 +113,13 @@ a:hover {
     flex-wrap: wrap;
 }
 
+#title-popup {
+    display: flex;
+    flex-wrap: wrap;
+    height: -webkit-fill-available;
+    align-items: center;
+}
+
 #pr-text {
     height: 71vh;
     overflow-y: scroll;
@@ -218,12 +225,20 @@ div#popup-time {
     
 }
 
+.t-r-title {
+    height: 43px;
+    border: #000 solid 2px;
+    border-radius: 28px 28px 28px 28px;
+    background: #fff;
+    margin-left: -8px;
+}
+
 .c-l-1 {
     flex-basis: 30%;
     border-left: #000 solid 2px;
     border-top: #000 solid 2px;
-    border-radius: 28px 0;
-    padding-top: 28px;
+    border-radius: 28px 0 0;
+    padding-top: 28px; 
     margin-top: -2px;
     margin-left: 25px;
     background: #fff;
