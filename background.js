@@ -149,7 +149,7 @@ titleWindow = async () => {
       width,
       height
     ];
-    let id = await openWindow(dims, false,"/info/title_window.html");
+    let id = await openWindow(dims, false,"/popups/info/title_window.html");
     storePopupID(id);
 };
 
@@ -162,7 +162,7 @@ infoWindow = async (artist) => {
       width,
       height
     ];
-    let id = await openWindow(dims, false,"/info/info_window.html");
+    let id = await openWindow(dims, false,"/popups/info/info_window.html");
 //    storePopupID(id);
     chrome.storage.local.set({info_wid_id: id});
 };
@@ -176,7 +176,7 @@ prWindow = async (artist) => {
       width,
       height
     ];
-    url = "/info/press_release_window.html";
+    url = "/popups/info/press_release_window.html";
     if (artist) url += "#" + artist;
     let id = await openWindow(dims, false, url);
     storePopupID(id);
@@ -192,7 +192,7 @@ closeAllWindow = async() => {
       width,
       height
     ];
-    url = "/info/close_all_window.html";
+    url = "/popups/info/close_all_window.html";
     let id = await openWindow(dims, false, url);
 //    storePopupID(id);
     return id;
