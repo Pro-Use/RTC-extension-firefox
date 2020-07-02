@@ -51,6 +51,8 @@ chrome.windows.onRemoved.addListener(function(id) {
                allArtistsWindow();
            } else if (msg === "ctrl-link") {
                
+          } else if (msg === 'popup-live'){
+               liveWindow();
            } else {
                 chrome.storage.local.set({last_triggered: msg});
                 await infoWindow(msg);
@@ -179,8 +181,19 @@ prWindow = async (artist) => {
     url = "/popups/info/press_release_window.html";
     if (artist) url += "#" + artist;
     let id = await openWindow(dims, false, url);
-    storePopupID(id);
-    chrome.storage.local.set({info_wid_id: id});
+};
+
+liveWindow = async () => {
+    let width = window.screen.availWidth - 200;
+    let height = window.screen.availHeight - 100;
+    let dims = [
+      (window.screen.availWidth - width) / 2,
+      (window.screen.availHeight - height) / 2,
+      width,
+      height
+    ];
+    url = "/popups/livestream/livestream_window.html";
+    await openWindow(dims, false, url);
 };
 
 closeAllWindow = async() => {

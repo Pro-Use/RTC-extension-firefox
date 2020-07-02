@@ -1,6 +1,6 @@
 {
     "name": "Real Time Constraints",
-    "version": "0.1",
+    "version": "0.3",
     "description": "Arebyte - Real Time Constraints",
     "permissions": ["storage", "declarativeContent", "alarms"],
     "background": {
@@ -17,5 +17,6 @@
             "128": "icons/rtc-128.png"
        }
     },
-    "manifest_version": 2
+    "manifest_version": 2,
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.youtube.com/iframe_api https://s.ytimg.com/yts/jsbin/www-widgetapi-vflUjHiIA/www-widgetapi.js; object-src 'self'"
 }

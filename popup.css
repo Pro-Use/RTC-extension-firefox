@@ -120,6 +120,10 @@ a:hover {
     align-items: center;
 }
 
+#live {
+    flex-basis: 100%;
+}
+
 #pr-text {
     height: 71vh;
     overflow-y: scroll;
@@ -131,6 +135,14 @@ a:hover {
     left: 135px;
     top: -70px;
     margin-bottom: -70px;
+    background: #fff;
+}
+
+#bio-popup-live {
+    width: 900px;
+    position: fixed;
+    left: 135px;
+    bottom: 0px;
     background: #fff;
 }
 
