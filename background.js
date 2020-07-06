@@ -201,7 +201,7 @@ liveWindow = async () => {
         
     ];
     dims.push(chat_dims);
-    urls.push("https://studio.youtube.com/live_chat?is_popout=1&v=Y7xiCdr18mA");
+    urls.push("https://studio.youtube.com/live_chat?is_popout=1&v=Fau_WpbI2LM");
     await openMultiple(dims, urls);
 };
 
