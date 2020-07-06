@@ -186,14 +186,23 @@ prWindow = async (artist) => {
 liveWindow = async () => {
     let width = window.screen.availWidth - 200;
     let height = window.screen.availHeight - 100;
-    let dims = [
+    let dims = [[
       (window.screen.availWidth - width) / 2,
       (window.screen.availHeight - height) / 2,
       width,
       height
+    ]];
+    urls = ["/popups/livestream/livestream_window.html"]; 
+    chat_dims = [
+        window.screen.availWidth - 500,
+        window.screen.availHeight - 600,
+        500, 
+        600
+        
     ];
-    url = "/popups/livestream/livestream_window.html";
-    await openWindow(dims, false, url);
+    dims.push(chat_dims);
+    urls.push("https://studio.youtube.com/live_chat?is_popout=1&v=Y7xiCdr18mA");
+    await openMultiple(dims, urls);
 };
 
 closeAllWindow = async() => {
