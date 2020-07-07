@@ -183,16 +183,17 @@ prWindow = async (artist) => {
     let id = await openWindow(dims, false, url);
 };
 
-liveWindow = async () => {
+liveWindow = async (event) => {
     let width = window.screen.availWidth - 200;
     let height = window.screen.availHeight - 100;
-    let dims = [[
+    let dims = [
       (window.screen.availWidth - width) / 2,
       (window.screen.availHeight - height) / 2,
       width,
       height
-    ]];
-    urls = ["/popups/livestream/livestream_window.html"]; 
+    ];
+    url = "/popups/livestream/livestream_window.html";
+    await openWindow(dims, false, url);
     chat_dims = [
         window.screen.availWidth - 500,
         window.screen.availHeight - 600,
@@ -200,9 +201,13 @@ liveWindow = async () => {
         600
         
     ];
-    dims.push(chat_dims);
-    urls.push("https://studio.youtube.com/live_chat?is_popout=1&v=Fau_WpbI2LM");
-    await openMultiple(dims, urls);
+    if (event === "pv") {
+        chat_url = "https://studio.youtube.com/live_chat?is_popout=1&v=_bwqSE3REQE";
+    } else {
+        chat_url = "https://studio.youtube.com/live_chat?is_popout=1&v=IsI7ESluACA";
+    }
+    
+    await openWindow(chat_dims, false, chat_url);
 };
 
 closeAllWindow = async() => {
@@ -408,30 +413,31 @@ var create_alarm = (pos) => {
 chrome.alarms.onAlarm.addListener(function(alarm) {
     console.log("Triggered:"+alarm.name);
     alarm_offset = Date.now() - alarm.scheduledTime;
-    if (alarm_offset < 66000) {
-        if (alarm.name === "countdown") {
-            icon_timer(alarm.scheduledTime);
-        } else {
-            chrome.storage.local.set({last_triggered: alarm.name});
-            infoWindow(alarm.name);
-            if (alarm.name === "gretchenandrew") {
-                gretchenandrew();
-            } else if (alarm.name === "sofiacrespo") {
-                sofiacrespo();
-            } else if (alarm.name === "jakeelwes") {
-                jakeelwes();
-            } else if (alarm.name === "disnovation") {
-                disnovation();
-            } else if (alarm.name === "bengrosser") {
-                bengrosser();
-            } else if (alarm.name === "libbyheaney") {
-                libbyheaney();
-            }  else if (alarm.name === "joelsimon") {
-                joelsimon();
-            }
-            titleWindow();
-            update_icon_text();
+    if (alarm.name === "pv" || alarm.name === "talk") {
+        if (alarm_offset < 10800000) {
+            liveWindow(alarm.name);
         }
+    }
+    else if (alarm_offset < 66000) {
+        chrome.storage.local.set({last_triggered: alarm.name});
+        infoWindow(alarm.name);
+        if (alarm.name === "gretchenandrew") {
+            gretchenandrew();
+        } else if (alarm.name === "sofiacrespo") {
+            sofiacrespo();
+        } else if (alarm.name === "jakeelwes") {
+            jakeelwes();
+        } else if (alarm.name === "disnovation") {
+            disnovation();
+        } else if (alarm.name === "bengrosser") {
+            bengrosser();
+        } else if (alarm.name === "libbyheaney") {
+            libbyheaney();
+        }  else if (alarm.name === "joelsimon") {
+            joelsimon();
+        }
+        titleWindow();
+        update_icon_text();
     } else {
         console.log("Missed " + alarm.name);
         update_icon_text();
@@ -449,9 +455,18 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 var create_alarms = () => {
     chrome.alarms.clear("countdown");
     chrome.alarms.clearAll();
+    // works
     for (i = 0; i < times.length; i++) {
         create_alarm(i);
     }
+    // events
+    var d = new Date();
+    var n = d.getTimezoneOffset() / 60;
+    var pv = new Date(Date.UTC(2020, 6, 7, 14 + n, 52));
+    chrome.alarms.create("pv", {when:pv.getTime()});
+    var talk = new Date(Date.UTC(2020, 23, 7, 18 + n, 30));
+    chrome.alarms.create("talk", {when:talk.getTime()});
+    // log
     chrome.alarms.getAll(function(alarms) {
         alarms.forEach(function(alarm) {
            alarm_time = new Date(alarm.scheduledTime);

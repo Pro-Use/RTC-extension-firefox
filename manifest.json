@@ -17,6 +17,5 @@
             "128": "icons/rtc-128.png"
        }
     },
-    "manifest_version": 2,
-    "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.youtube.com/iframe_api https://s.ytimg.com/yts/jsbin/www-widgetapi-vflUjHiIA/www-widgetapi.js; object-src 'self'"
+    "manifest_version": 2
 }
