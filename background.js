@@ -48,7 +48,7 @@ chrome.windows.onRemoved.addListener(function(id) {
                     }
                 });
            } else if (msg === "ctrl-link-work") {
-               allArtistsWindow();
+               prWindow(null); 
            } else if (msg === "ctrl-link") {
                 prWindow(null);          
           } else if (msg === 'popup-live'){
