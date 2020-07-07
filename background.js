@@ -199,7 +199,6 @@ liveWindow = async (event) => {
         window.screen.availHeight - 600,
         500, 
         600
-        
     ];
     if (event === "pv") {
         chat_url = "https://studio.youtube.com/live_chat?is_popout=1&v=_bwqSE3REQE";
