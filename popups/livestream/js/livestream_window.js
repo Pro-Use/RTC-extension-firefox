@@ -1,25 +1,17 @@
-var player_width = document.body.offsetWidth - 20;
-var player_height = (player_width / 16) * 9;
-console.log(player_width);
-
-var tag = document.createElement('script');
-
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-console.log(firstScriptTag);
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+var width = document.body.offsetWidth - 20;
+var height = (width / 16) * 9;
 
 
 var player;
-function onYouTubeIframeAPIReady() {
-  player = new YT.Player('player', {
-    width: player_width,
-    height: player_height,
-    videoId: 'Fau_WpbI2LM',
-    events: {
-    }
-  });
+now = new Date();
+if (now.getDay() === 23) {
+    vid_id = "_bwqSE3REQE";
+} else {
+    vid_id = "IsI7ESluACA";
 }
+
+var player = document.getElementById("player");
+player.innerHTML = '<iframe width="'+width+'" height="'+height+'" src="https://www.youtube-nocookie.com/embed/'+vid_id+'?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
 
 //Design close buttons
 const buttons = document.querySelectorAll('.close');
