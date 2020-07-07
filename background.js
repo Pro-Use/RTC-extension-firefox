@@ -461,9 +461,9 @@ var create_alarms = () => {
     // events
     var d = new Date();
     var n = d.getTimezoneOffset() / 60;
-    var pv = new Date(Date.UTC(2020, 6, 7, 14 + n, 52));
+    var pv = new Date(Date.UTC(2020, 23, 7, 18 + n, 30));
     chrome.alarms.create("pv", {when:pv.getTime()});
-    var talk = new Date(Date.UTC(2020, 23, 7, 18 + n, 30));
+    var talk = new Date(Date.UTC(2020, 6, 8, 19 + n, 00));
     chrome.alarms.create("talk", {when:talk.getTime()});
     // log
     chrome.alarms.getAll(function(alarms) {
