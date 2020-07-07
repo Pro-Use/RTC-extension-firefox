@@ -48,6 +48,20 @@ function closeAll() {
     chrome.storage.local.set({popups: []});
 }
 
+//launch live
+var live_counter = 0;
+
+document.addEventListener('keydown', logKey);
+
+function logKey(e) {
+  if (e.code === "KeyL"){
+      live_counter += 1;
+      if (live_counter > 2) {
+           port.postMessage("popup-live");
+      }
+  };
+}
+
 var work_info = {
     gretchenandrew:["Gretchen Andrew","The Next American President"],
     sofiacrespo:["Sofia Crespo x Dark Fractures","Artificial Remnants"],
