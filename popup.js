@@ -48,18 +48,24 @@ function closeAll() {
     chrome.storage.local.set({popups: []});
 }
 
-//launch live
+//launch live || all artists
 var live_counter = 0;
+var artists_counter = 0;
 
 document.addEventListener('keydown', logKey);
 
 function logKey(e) {
   if (e.code === "KeyL"){
       live_counter += 1;
-      if (live_counter > 2) {
+      if (live_counter > 3) {
            port.postMessage("popup-live");
       }
-  };
+  } else if (e.code === "KeyA"){
+      artists_counter += 1;
+      if (artists_counter > 3) {
+           port.postMessage("all-artists");
+      }
+  }
 }
 
 var work_info = {
