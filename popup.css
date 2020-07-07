@@ -113,6 +113,12 @@ a:hover {
     flex-wrap: wrap;
 }
 
+.pr-spacer {
+    width: -webkit-fill-available;
+    border-bottom: #000 solid 1px;
+    margin: 30px;
+}
+
 #title-popup {
     display: flex;
     flex-wrap: wrap;
