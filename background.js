@@ -71,7 +71,7 @@ chrome.windows.onRemoved.addListener(function(id) {
                 } else if (msg === "joelsimon") {
                     joelsimon();
                 }
-                titleWindow(); 
+                titleWindow(msg); 
            } 
       });
  });
@@ -142,7 +142,7 @@ function storePopupID(id) {
     });
 }
 
-titleWindow = async () => {
+titleWindow = async (artist) => {
     let width = 450;
     let height = 10;
     let dims = [
@@ -151,6 +151,9 @@ titleWindow = async () => {
       width,
       height
     ];
+    if (artist === "sofiacrespo") {
+        dims[0] = (window.screen.availWidth - width) - 10;
+    }
     let id = await openWindow(dims, false,"/popups/info/title_window.html");
     storePopupID(id);
 };
@@ -435,7 +438,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         }  else if (alarm.name === "joelsimon") {
             joelsimon();
         }
-        titleWindow();
+        titleWindow(alarm.name);
         update_icon_text();
     } else {
         console.log("Missed " + alarm.name);
