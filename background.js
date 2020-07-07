@@ -50,7 +50,7 @@ chrome.windows.onRemoved.addListener(function(id) {
            } else if (msg === "ctrl-link-work") {
                allArtistsWindow();
            } else if (msg === "ctrl-link") {
-               
+                prWindow(null);          
           } else if (msg === 'popup-live'){
                liveWindow();
            } else {
@@ -492,6 +492,9 @@ var update_icon_text = () => {
                 let hour =  alarm_time.getHours();
                 if (hour < 12) {
                     var time_txt = " am";
+                } else if (hour === 12) {
+                  hour = "";
+                  var time_txt = "Noon";
                 } else {
                     hour -= 12;
                     var time_txt = " pm";
