@@ -17,10 +17,10 @@ chrome.storage.local.get(['last_triggered'], function(result) {
          title_div.textContent = work_titles[last_triggered];
          document.title = work_titles[last_triggered];
      }
-    var new_width = document.getElementById("title").offsetWidth - window.innerWidth;
-    var new_height = document.body.offsetHeight - window.innerHeight;
+    var new_width = (document.getElementById("title").offsetWidth + 10) - window.innerWidth;
+    var new_height = (document.getElementById("title").offsetHeight + 10) - window.innerHeight;
     console.log(new_width, new_height);
-    window.resizeBy(new_width, new_width);
+    window.resizeBy(new_width, new_height);
 });
 
 //Design close buttons
@@ -32,7 +32,7 @@ buttons.forEach(function(currentBtn){
   };
 });
 
-//Close after timeout
+Close after timeout
 
 setTimeout(function(){ 
     window.close(); 

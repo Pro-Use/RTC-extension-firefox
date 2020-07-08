@@ -146,7 +146,7 @@ function storePopupID(id) {
 
 titleWindow = async (artist) => {
     let width = 450;
-    let height = 10;
+    let height = 100;
     let dims = [
       10,
       10,
