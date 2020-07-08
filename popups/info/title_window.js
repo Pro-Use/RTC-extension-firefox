@@ -32,4 +32,10 @@ buttons.forEach(function(currentBtn){
   };
 });
 
+//Close after timeout
+
+setTimeout(function(){ 
+    window.close(); 
+}, 3000);
+
 
