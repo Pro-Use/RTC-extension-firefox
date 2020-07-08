@@ -13,3 +13,29 @@
     background-position: center;
 }
 
+/*ben*/
+
+div#timeout {
+    display: none;
+    position: fixed;
+    width: -webkit-fill-available;
+    top: 10px;
+    justify-content: center;
+}
+
+div#timeout_text {
+    width: 250px;
+    background: white;
+    text-align: center;
+    font-family: monospace;
+    font-size: 2em;
+    padding: 10px;
+    border: #000 solid 1.5px;
+    border-radius: 20px;
+}
+
+div#stay {
+    border: black solid;
+    margin: 10px 70px;
+    cursor: pointer;
+}

@@ -12,8 +12,15 @@ and open the template in the editor.
     </head>
     <body style="margin: 0; overflow: hidden">
         <iframe style="width: 100vw; height: 100vh; border: none" src="https://tracingyou.bengrosser.com"></iframe>
-    <link rel="stylesheet" type="text/css" href="/popups/info/info.css">
+        <div id="timeout">
+            <div id="timeout_text">
+                This window will close in <span id="seconds">20</span> seconds
+                <div id="stay">Stay</div>
+            </div>
+        </div>
+        <link rel="stylesheet" type="text/css" href="/popups/info/info.css">
     <script src="/popups/info/info.js"></script>
+    <script src="tracingyou.js"></script>
     </body>
     
 </html>
