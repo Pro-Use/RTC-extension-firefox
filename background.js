@@ -52,7 +52,7 @@ chrome.windows.onRemoved.addListener(function(id) {
            } else if (msg === "all-artists") {
                allArtistsWindow(); 
            } else if (msg === "ctrl-link") {
-                prWindow(null);          
+                arebyteWindow();          
            } else if (msg === 'popup-live'){
                liveWindow();
            } else {
@@ -241,6 +241,20 @@ allArtistsWindow = async (artists) => {
     let id = await openWindow(dims, false,"all_artists.html");
     storePopupID(id);
     chrome.storage.local.set({info_wid_id: id});
+};
+
+arebyteWindow = async() => {
+    let width = window.screen.availWidth - 100;
+    let height = window.screen.availHeight - 100;
+    let dims = [
+      (window.screen.availWidth - width) / 2,
+      (window.screen.availHeight - height) / 2,
+      width,
+      height
+    ];
+    let url = "https://www.arebyte.com/real-time-constraints";
+    let id = await openWindow(dims, false, url);
+    storePopupID(id);
 };
 // Artist functions
 
