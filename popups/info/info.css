@@ -3,12 +3,13 @@
     position: fixed;
     right: 5px;
     bottom: 5px;
-    width: 24px;
-    height: 24px;
-    border: #000 solid 1px;
+    width: 33px;
+    height: 33px;
     border-radius: 15px;
     background: white;
     background-image: url(/icons/rtc-24.png);
-    background-size: cover;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
