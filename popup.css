@@ -119,6 +119,12 @@ a:hover {
     margin: 30px;
 }
 
+.times-spacer {
+    width: -webkit-fill-available;
+    border-bottom: #cacaca solid 10px;
+    margin: 30px 0px;
+}
+
 #title-popup {
     display: flex;
     flex-wrap: wrap;
