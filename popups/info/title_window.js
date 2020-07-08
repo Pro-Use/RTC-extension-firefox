@@ -32,7 +32,7 @@ buttons.forEach(function(currentBtn){
   };
 });
 
-Close after timeout
+//Close after timeout
 
 setTimeout(function(){ 
     window.close(); 
