@@ -8,7 +8,7 @@ buttons.forEach(function(currentBtn){
 });
 
 //Background comms
- var port = chrome.extension.connect({
+ var port = browser.runtime.connect({
       name: "RTC_Comms"
  });
 
@@ -30,22 +30,22 @@ closeall.onclick = () => closeAll();
 // Close all popups
 
 function closeAll() {
-    chrome.storage.local.get(['popups'], function(result) {
+    browser.storage.local.get(['popups'], function(result) {
         let popups = result.popups;
         if (popups !== undefined) {
             popups.forEach( function (popup){
                 console.log("Removing " + popup);
-                chrome.windows.remove(popup); 
+                browser.windows.remove(popup); 
             });
         }
     });
-    chrome.storage.local.get(['info_wid_id'], function(result) {
+    browser.storage.local.get(['info_wid_id'], function(result) {
         let info_wid_id = result.info_wid_id;
         if (info_wid_id !== undefined) {
-            chrome.windows.remove(info_wid_id);
+            browser.windows.remove(info_wid_id);
         }
     });
-    chrome.storage.local.set({popups: []});
+    browser.storage.local.set({popups: []});
 }
 
 //launch live || all artists
@@ -87,8 +87,8 @@ var d = new Date();
 var n = d.getTimezoneOffset() / 60;
 
 var pv = [
-    new Date(Date.UTC(2020, 23, 7, 18 + n, 30)),
-    new Date(Date.UTC(2020, 23, 7, 21 + n, 30))
+    new Date(Date.UTC(2020, 6, 9, 18 + n, 30)),
+    new Date(Date.UTC(2020, 6, 23, 21 + n, 30))
 ];
 console.log(pv);
 
@@ -120,10 +120,12 @@ if (pv[0].getTime() < now && now < pv[1].getTime()) {
 } else {
     var next_ts = null;
 
-    chrome.alarms.getAll(function (alarms) {
+    browser.alarms.getAll(function (alarms) {
+        console.log("Alarms:");
+        console.log(alarms);
         alarm_times = [];
         alarms.forEach(function(alarm) {
-            if (alarm.name !== "countdown") {
+            if (alarm.name !== "countdown" && alarm.name !== "pv" && alarm.name !== "talk") {
                 alarm_times.push(alarm.scheduledTime);
             }
         });
