@@ -8,14 +8,16 @@ var work_titles = {
     joelsimon:"Joel Simon - Artbreeder"
 };
 
-chrome.storage.local.get(['last_triggered'], function(result) {
+var new_height;
+
+browser.storage.local.get(['last_triggered'], function(result) {
      let last_triggered = result.last_triggered;
      console.log(last_triggered);
      if (last_triggered !== undefined) {
          document.getElementById(last_triggered).style.display = "block";
          document.title = work_titles[last_triggered];
      }
-    var new_height = document.body.offsetHeight - window.innerHeight;
+    new_height = window.innerHeight - document.body.offsetHeight;
     console.log(new_height);
     if (new_height !== 0) {
        window.resizeBy(0, new_height);
@@ -32,3 +34,14 @@ buttons.forEach(function(currentBtn){
 });
 
 
+const gettingCurrent = browser.tabs.getCurrent();
+gettingCurrent.then(function(tabInfo){
+    var window_id = tabInfo.windowId;
+    let gettingWindow = browser.windows.get(window_id);
+    gettingWindow.then(function(window){
+        let height = window.height - new_height;
+        browser.windows.update(window_id, {
+            height: height
+          });
+    });
+});

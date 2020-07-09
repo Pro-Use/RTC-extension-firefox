@@ -57,7 +57,7 @@ function main(timeline) {
             current_step++
             add_img(timeline[current_step])
             // console.log(timeline[current_step].username);
-            // chrome.runtime.sendMessage(timeline[current_step].username)
+            // browser.runtime.sendMessage(timeline[current_step].username)
             if (current_step >= timeline.length-2) {
                 Graph.zoomToFit(4000, 20)
                 Graph.enableZoomPanInteraction(true)

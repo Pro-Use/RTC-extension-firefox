@@ -4,9 +4,9 @@ var info_div = document.createElement("div");
 info_div.id = "rtc_info_button";
 document.body.appendChild(info_div);
 
- var port = chrome.extension.connect({
+ var port = browser.runtime.connect({
       name: "info_click"
  });
 
 info_div.onmouseover = () => port.postMessage("info_up");
-info_div.onmousedown = () => port.postMessage("ctrl-link")
+info_div.onmousedown = () => port.postMessage("ctrl-link");

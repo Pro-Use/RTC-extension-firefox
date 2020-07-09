@@ -1,4 +1,4 @@
-var width = document.body.offsetWidth - 20;
+var width = window.innerWidth - 20;
 var height = (width / 16) * 9;
 
 
@@ -23,7 +23,7 @@ buttons.forEach(function(currentBtn){
 });
 
 //Background comms
- var port = chrome.extension.connect({
+ var port = browser.runtime.connect({
       name: "RTC_Comms"
  });
 

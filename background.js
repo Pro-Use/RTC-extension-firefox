@@ -1,36 +1,89 @@
 
 var popups = [];
 
+// Timers
+var times = [11,12,13,14,15,16,17];
+//var times = [2];
+//,2,3,4,5,6]; // For debug
+
+var create_alarm = (pos) => {
+    let now = new Date();
+    // Alarm today:
+    now.setHours(times[pos],00,00);
+//    now.setMinutes(now.getMinutes() + times[pos]); // For debug
+    // As UTC timestamp:
+    new_time = now.getTime();
+    // Is it in the past? Add 1 day
+    if (new_time < Date.now()) {
+//        console.log("In the past");
+        new_time += 86400000;
+    // Or is it less than a minute? Add a minute
+    } else if ((new_time - Date.now()) < 60000 ) {
+        new_time += 60000;
+    }
+//    console.log("Milliseconds till alarm " + (new_time - Date.now() ));
+    let alarm_info = {
+        when:new_time,
+        periodInMinutes: 1440
+    };
+    browser.alarms.create(artists_funcs[pos].name, alarm_info);
+};
+
+var create_alarms = () => {
+    browser.alarms.clear("countdown");
+    browser.alarms.clearAll();
+    // works
+    for (i = 0; i < times.length; i++) {
+        create_alarm(i);
+    }
+    // events
+    var d = new Date();
+    var n = d.getTimezoneOffset() / 60;
+    var pv = new Date(Date.UTC(2020, 23, 7, 18 + n, 30));
+    browser.alarms.create("pv", {when:pv.getTime()});
+    var talk = new Date(Date.UTC(2020, 6, 8, 19 + n, 00));
+    browser.alarms.create("talk", {when:talk.getTime()});
+    // log
+    browser.alarms.getAll(function(alarms) {
+        alarms.forEach(function(alarm) {
+           alarm_time = new Date(alarm.scheduledTime);
+           console.log("Alarm: "+alarm.name+", Time: "+alarm_time); 
+        });
+    });
+ };
+
 // Clear Window cache + create alarms on install
-chrome.runtime.onInstalled.addListener(function () {
-    chrome.storage.local.remove("popups", function () {
+browser.runtime.onInstalled.addListener(function () {
+    browser.storage.local.remove("popups", function () {
         console.log("Cleared popup cache");
     });
     create_alarms();
+    update_icon_text();
 });
 
 // Clear Window cache + create alarms on restart
-chrome.runtime.onStartup.addListener(function () {
-    chrome.storage.local.remove("popups", function () {
+browser.runtime.onStartup.addListener(function () {
+    browser.storage.local.remove("popups", function () {
         console.log("Cleared popup cache");
     });
     create_alarms();
+    update_icon_text();
 });
 
 // Closed window listener
-chrome.windows.onRemoved.addListener(function(id) {
-    chrome.storage.local.get(['popups'], function(result) {
+browser.windows.onRemoved.addListener(function(id) {
+    browser.storage.local.get(['popups'], function(result) {
         popups = result.popups;
         index = popups.indexOf(id);
         if (index > -1) {
             popups.splice(index, 1);
         }
-        chrome.storage.local.set({popups: popups}, function() {});
+        browser.storage.local.set({popups: popups}, function() {});
     });
 });
 
 // Popup comms
- chrome.extension.onConnect.addListener(function(port) {
+ browser.runtime.onConnect.addListener(function(port) {
       port.onMessage.addListener(async function(msg) {
            console.log("message recieved: " + msg);
            if (msg.includes("bio")) {
@@ -41,10 +94,10 @@ chrome.windows.onRemoved.addListener(function(id) {
                }
                prWindow(artist);
            } else if (msg === "info_up") {
-               chrome.storage.local.get(['info_wid_id'], function(result) {
+               browser.storage.local.get(['info_wid_id'], function(result) {
                     let info_wid_id = result.info_wid_id;
                     if (info_wid_id !== undefined) {
-                        chrome.windows.update(info_wid_id, {focused: true});
+                        browser.windows.update(info_wid_id, {focused: true});
                     }
                 });
            } else if (msg === "ctrl-link-work") {
@@ -56,7 +109,7 @@ chrome.windows.onRemoved.addListener(function(id) {
            } else if (msg === 'popup-live'){
                liveWindow();
            } else {
-                chrome.storage.local.set({last_triggered: msg});
+                browser.storage.local.set({last_triggered: msg});
                 await infoWindow(msg);
                 if (msg === "gretchenandrew") {
                     gretchenandrew();
@@ -85,24 +138,25 @@ chrome.windows.onRemoved.addListener(function(id) {
     if (fullscreen) {
         optionsDictionary.state = "fullscreen";
     } else {
-        optionsDictionary.left = dims[0];
+        optionsDictionary.left = parseInt(dims[0]);
         optionsDictionary.top = parseInt(dims[1]);
-        optionsDictionary.width = dims[2];
-        optionsDictionary.height = dims[3];
+        optionsDictionary.width = parseInt(dims[2]);
+        optionsDictionary.height = parseInt(dims[3]);
 
     }
     return new Promise((resolve, reject) => {
-        try {
-          chrome.windows.create(optionsDictionary, function (newWindow) {
-            if (chrome.runtime.lastError) reject(chrome.runtime.lastError);
-            else {
+          var pos = [optionsDictionary.left, optionsDictionary.top];
+          let new_window = browser.windows.create(optionsDictionary);
+          new_window.then(function (newWindow) {
               let new_id = newWindow.id;
-              resolve(new_id);
-            }
+              let update = browser.windows.update(new_id, {
+                left: pos[0],
+                top: pos[1]
+              });
+              update.then(function(window) {
+                resolve(window.id);
+              });
           });
-        } catch (error) {
-            reject (error);
-        };
     });
 }
 
@@ -127,7 +181,7 @@ async function openMultiple(dims, urls) {
 }
 
 function storePopupID(id) {
-    chrome.storage.local.get(['popups'], function(result) {
+    browser.storage.local.get(['popups'], function(result) {
         popups = result.popups;
         if (popups === undefined){
             popups = [];
@@ -138,7 +192,7 @@ function storePopupID(id) {
             id.forEach(id_num => popups.push(id_num));
         }
         console.log("saving:" + popups);
-        chrome.storage.local.set({popups: popups}, function () {
+        browser.storage.local.set({popups: popups}, function () {
             console.log(popups);
         });
     });
@@ -171,7 +225,7 @@ infoWindow = async (artist) => {
     ];
     let id = await openWindow(dims, false,"/popups/info/info_window.html");
 //    storePopupID(id);
-    chrome.storage.local.set({info_wid_id: id});
+    browser.storage.local.set({info_wid_id: id});
 };
 
 prWindow = async (artist) => {
@@ -218,7 +272,7 @@ closeAllWindow = async() => {
     let width = 50;
     let height = 40;
     let dims = [
-      window.screen.availWidth - (width + 10),
+      window.screen.availWidth - (width + 40),
       window.screen.availHeight - (height + 40),
       width,
       height
@@ -240,7 +294,7 @@ allArtistsWindow = async (artists) => {
     ];
     let id = await openWindow(dims, false,"all_artists.html");
     storePopupID(id);
-    chrome.storage.local.set({info_wid_id: id});
+    browser.storage.local.set({info_wid_id: id});
 };
 
 arebyteWindow = async() => {
@@ -268,7 +322,7 @@ timesWindow = async () => {
     ];
     let id = await openWindow(dims, false,"popups/info/times_window.html");
     storePopupID(id);
-    chrome.storage.local.set({info_wid_id: id});
+    browser.storage.local.set({info_wid_id: id});
 };
 // Artist functions
 
@@ -401,8 +455,8 @@ joelsimon = async () => {
     }, 3000);
 
     setTimeout(async () => {
-        chrome.windows.remove(id1);
-        chrome.windows.remove(id2);
+        browser.windows.remove(id1);
+        browser.windows.remove(id2);
         const r = .5 * w;
         dims = [r/2, (h-r)/2, r, r];
         id3 = await openWindow(round(dims), false, `popups/joelsimon/index.html`);
@@ -410,39 +464,12 @@ joelsimon = async () => {
     }, 6000);
 };
 
-// Timers
-var times = [11,12,13,14,15,16,17];
-//var times = [2];
-//,2,3,4,5,6]; // For debug
-
 
 var artists_funcs = [gretchenandrew, sofiacrespo, disnovation, 
     jakeelwes, bengrosser, libbyheaney, joelsimon];
 
-var create_alarm = (pos) => {
-    let now = new Date();
-    // Alarm today:
-    now.setHours(times[pos],00,00);
-//    now.setMinutes(now.getMinutes() + times[pos]); // For debug
-    // As UTC timestamp:
-    new_time = now.getTime();
-    // Is it in the past? Add 1 day
-    if (new_time < Date.now()) {
-//        console.log("In the past");
-        new_time += 86400000;
-    // Or is it less than a minute? Add a minute
-    } else if ((new_time - Date.now()) < 60000 ) {
-        new_time += 60000;
-    }
-//    console.log("Milliseconds till alarm " + (new_time - Date.now() ));
-    let alarm_info = {
-        when:new_time,
-        periodInMinutes: 1440
-    };
-    chrome.alarms.create(artists_funcs[pos].name, alarm_info);
-};
 
-chrome.alarms.onAlarm.addListener(function(alarm) {
+browser.alarms.onAlarm.addListener(function(alarm) {
     console.log("Triggered:"+alarm.name);
     alarm_offset = Date.now() - alarm.scheduledTime;
     if (alarm.name === "pv" || alarm.name === "talk") {
@@ -451,7 +478,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         }
     }
     else if (alarm_offset < 66000) {
-        chrome.storage.local.set({last_triggered: alarm.name});
+        browser.storage.local.set({last_triggered: alarm.name});
         infoWindow(alarm.name);
         if (alarm.name === "gretchenandrew") {
             gretchenandrew();
@@ -474,7 +501,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         console.log("Missed " + alarm.name);
         update_icon_text();
     }
-    chrome.alarms.getAll(function(alarms) {
+    browser.alarms.getAll(function(alarms) {
         alarms.forEach(function(saved_alarm) {
             if (saved_alarm.name === alarm.name) {
                 alarm_time = new Date(saved_alarm.scheduledTime);
@@ -484,34 +511,12 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     });
 });
 
-var create_alarms = () => {
-    chrome.alarms.clear("countdown");
-    chrome.alarms.clearAll();
-    // works
-    for (i = 0; i < times.length; i++) {
-        create_alarm(i);
-    }
-    // events
-    var d = new Date();
-    var n = d.getTimezoneOffset() / 60;
-    var pv = new Date(Date.UTC(2020, 23, 7, 18 + n, 30));
-    chrome.alarms.create("pv", {when:pv.getTime()});
-    var talk = new Date(Date.UTC(2020, 6, 8, 19 + n, 00));
-    chrome.alarms.create("talk", {when:talk.getTime()});
-    // log
-    chrome.alarms.getAll(function(alarms) {
-        alarms.forEach(function(alarm) {
-           alarm_time = new Date(alarm.scheduledTime);
-           console.log("Alarm: "+alarm.name+", Time: "+alarm_time); 
-        });
-    });
- };
 
 var update_icon_text = () => {
-    chrome.alarms.getAll(function (alarms) {
+    browser.alarms.getAll(function (alarms) {
         alarm_times = [];
         alarms.forEach(function(alarm) {
-            if (alarm.name !== "countdown") {
+            if (alarm.name !== "countdown" && alarm.name !== "pv" && alarm.name !== "talk") {
                 alarm_times.push(alarm.scheduledTime);
             }
         });
@@ -532,37 +537,18 @@ var update_icon_text = () => {
                     hour -= 12;
                     var time_txt = " pm";
                 }
-                chrome.browserAction.setBadgeBackgroundColor({color:[0,0,0,1]});
-                chrome.browserAction.setBadgeText({text:hour.toString()+time_txt});
-//                chrome.alarms.create("countdown", {when: alarm.scheduledTime - 60000});
+                browser.browserAction.setBadgeBackgroundColor({color:[0,0,0,150]});
+                browser.browserAction.setBadgeText({text:hour.toString()+time_txt});
+//                browser.alarms.create("countdown", {when: alarm.scheduledTime - 60000});
 //                // Debug
-//                chrome.alarms.get("countdown", function(alarm) {
+//                browser.alarms.get("countdown", function(alarm) {
 //                    console.log(alarm.name + " - " + new Date(alarm.scheduledTime)); 
 //                 });
                 break;
             }        
         }
     });
- };
- 
-var icon_timer = async (time) => {
-    var sleep = (ms) => {return new Promise(resolve => setTimeout(resolve, ms)); };
-    console.log("starting countdown");
-    work_trigger = time + 59000;
-    chrome.browserAction.setBadgeBackgroundColor({color:[1,0,0,1]});
-    while (Date.now() < work_trigger) {
-        let countdown = (work_trigger - Date.now()) / 100;
-        let countdown_str = countdown.toString();
-        console.log(countdown_str);
-        chrome.browserAction.setBadgeText({text:countdown_str.slice(0,4)});
-        await sleep(300);
-
-    };
-    chrome.browserAction.setBadgeBackgroundColor({color:[0,0,0,1]});
-    console.log("timer complete");
-};
-
-    
+ }; 
 
 // Icon timer overlay
 update_icon_text();

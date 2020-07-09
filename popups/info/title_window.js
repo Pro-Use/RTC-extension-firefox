@@ -7,8 +7,8 @@ var work_titles = {
     libbyheaney:"Libby Heaney - Elvis",
     joelsimon:"Joel Simon - Artbreeder"
 };
-
-chrome.storage.local.get(['last_triggered'], function(result) {
+var new_width, new_height;
+browser.storage.local.get(['last_triggered'], function(result) {
      let last_triggered = result.last_triggered;
      console.log(last_triggered);
      if (last_triggered !== undefined) {
@@ -17,11 +17,24 @@ chrome.storage.local.get(['last_triggered'], function(result) {
          title_div.textContent = work_titles[last_triggered];
          document.title = work_titles[last_triggered];
      }
-    var new_width = (document.getElementById("title").offsetWidth + 10) - window.innerWidth;
-    var new_height = (document.getElementById("title").offsetHeight + 10) - window.innerHeight;
+    new_width = window.innerWidth - (document.getElementById("title").offsetWidth + 10);
+    new_height = window.innerHeight - (document.getElementById("title").offsetHeight);
     console.log(new_width, new_height);
-    window.resizeBy(new_width, new_height);
+    const gettingCurrent = browser.tabs.getCurrent();
+    gettingCurrent.then(function(tabInfo){
+        var window_id = tabInfo.windowId;
+        let gettingWindow = browser.windows.get(window_id);
+        gettingWindow.then(function(window){
+            let height = window.height - new_height;
+            let width = window.width - new_width;
+            browser.windows.update(window_id, {
+                height: height,
+                width: width
+              });
+        });
+    });
 });
+
 
 //Design close buttons
 const buttons = document.querySelectorAll('.close');
@@ -36,6 +49,6 @@ buttons.forEach(function(currentBtn){
 
 setTimeout(function(){ 
     window.close(); 
-}, 3000);
+}, 5000);
 
 

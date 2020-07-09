@@ -37,7 +37,7 @@ a:hover {
 .button {
     font-size: 1.2em;
     line-height:2em;
-    width: -webkit-fill-available;
+    width: -moz-available;
     white-space: nowrap;
     padding: 20px 30px;
 }
@@ -54,7 +54,7 @@ a:hover {
 .control-buttons {
     display: flex;
     justify-content: flex-end;
-    padding: 5px 10px;
+    padding: 2px 10px;
 }
 
 [id^="ctrl-"] {
@@ -114,13 +114,13 @@ a:hover {
 }
 
 .pr-spacer {
-    width: -webkit-fill-available;
+    width: -moz-available;
     border-bottom: #000 solid 1px;
     margin: 30px;
 }
 
 .times-spacer {
-    width: -webkit-fill-available;
+    width: -moz-available;
     border-bottom: #cacaca solid 10px;
     margin: 30px 0px;
 }
@@ -128,7 +128,7 @@ a:hover {
 #title-popup {
     display: flex;
     flex-wrap: wrap;
-    height: -webkit-fill-available;
+    height: -moz-available;
     align-items: center;
 }
 
@@ -165,7 +165,7 @@ a:hover {
 }
 
 div#ctrl-link-bio {
-    width: -webkit-fill-available;
+    width: -moz-available;
     padding: 0;
 }
 
@@ -175,7 +175,7 @@ div#ctrl-link-bio-live {
 }
 
 div#draggable {
-    width: -webkit-fill-available;
+    width: -moz-available;
     background-color: #ffffff;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23252525' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
     margin: 10px;
@@ -206,7 +206,7 @@ img#arebyte_logo {
     display: flex;
     justify-content: center;
     font-size: 2em;
-    margin: -8px;
+    padding-top: 20vh;
 }
 
 .popup-text {

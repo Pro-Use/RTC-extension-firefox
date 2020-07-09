@@ -10,7 +10,7 @@ var work_info = {
 
 var all_artists_div = document.getElementById("all_artists");
 
-chrome.alarms.getAll(function (alarms) {
+browser.alarms.getAll(function (alarms) {
     alarms.forEach(function(alarm) {
         let info = work_info[alarm.name];
         if (info !== undefined) {
