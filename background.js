@@ -529,13 +529,13 @@ var update_icon_text = () => {
                 let alarm_time = new Date(next_ts);
                 let hour =  alarm_time.getHours();
                 if (hour < 12) {
-                    var time_txt = " am";
+                    var time_txt = "am";
                 } else if (hour === 12) {
                   hour = "";
                   var time_txt = "Noon";
                 } else {
                     hour -= 12;
-                    var time_txt = " pm";
+                    var time_txt = "pm";
                 }
                 browser.browserAction.setBadgeBackgroundColor({color:[0,0,0,150]});
                 browser.browserAction.setBadgeText({text:hour.toString()+time_txt});
