@@ -87,7 +87,7 @@ var d = new Date();
 var n = d.getTimezoneOffset() / 60;
 
 var pv = [
-    new Date(Date.UTC(2020, 6, 9, 18 + n, 30)),
+    new Date(Date.UTC(2020, 6, 23, 18 + n, 30)),
     new Date(Date.UTC(2020, 6, 23, 21 + n, 30))
 ];
 console.log(pv);
