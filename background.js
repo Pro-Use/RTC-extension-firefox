@@ -52,6 +52,11 @@ var create_alarms = () => {
     });
  };
 
+// Update alarms on system idle update
+browser.idle.onStateChanged.addListener(function() {
+   create_alarms(); 
+});
+
 // Clear Window cache + create alarms on install
 browser.runtime.onInstalled.addListener(function () {
     browser.storage.local.remove("popups", function () {
