@@ -1,6 +1,6 @@
 {
     "name": "Real Time Constraints",
-    "version": "0.3",
+    "version": "1.0",
     "description": "Arebyte - Real Time Constraints",
     "permissions": ["storage", "alarms", "tabs"],
     "background": {
