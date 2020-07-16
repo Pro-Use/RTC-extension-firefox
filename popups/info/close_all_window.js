@@ -22,8 +22,7 @@ function closeAll() {
                 browser.windows.remove(info_wid_id);
             }
         });
-        browser.storage.local.set({popups: []});
-        window.close();
+        browser.storage.local.set({popups: []},function(){window.close();});
     });
 }
 
