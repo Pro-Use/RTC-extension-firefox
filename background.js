@@ -64,6 +64,7 @@ browser.runtime.onInstalled.addListener(function () {
     });
     create_alarms();
     update_icon_text();
+    browser.storage.local.set({paused: false});
 });
 
 // Clear Window cache + create alarms on restart
@@ -113,6 +114,8 @@ browser.windows.onRemoved.addListener(function(id) {
                 arebyteWindow();          
            } else if (msg === 'popup-live'){
                liveWindow();
+           } else if (msg === 'pause_toggle'){
+               pause_toggle();
            } else {
                 browser.storage.local.set({last_triggered: msg});
                 await infoWindow(msg);
@@ -135,6 +138,26 @@ browser.windows.onRemoved.addListener(function(id) {
            } 
       });
  });
+ 
+  //Pause
+function pause_toggle() {
+    browser.storage.local.get(['paused'], function(result) {
+        paused = result.paused;
+        if (paused === null || paused === false) {
+            browser.storage.local.set({paused: true});
+            browser.alarms.clearAll();
+            browser.browserAction.setBadgeText({text:""});
+            console.log("Paused");
+        } else {
+            browser.storage.local.set({paused: false});
+            create_alarms();
+            update_icon_text();
+            console.log("Unpaused");
+            
+        }
+    });
+    
+ }
  
  //Popup functions
  

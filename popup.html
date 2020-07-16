@@ -30,6 +30,9 @@
                 <div id="popup-time"></div>
                 <div id="popup-timer"><span id="timer">0h</span></div>   
             </div>
+            <div class="popup-text center" id="paused" style="display:none">
+                <div id="popup-paused" class="blinking">PAUSED</div>
+            </div>
             <div class="popup-text center" id="live" style="display:none">
                 <div id="popup-live" class="send blinking">LIVE STREAM</div>
             </div>
@@ -69,12 +72,18 @@
           <!--close-->
           <div id="close-popup" class="button-conatiner">
             <div class="control-buttons">
+              <div id="ctrl-link-pause" class="button">Pause</div>
               <div id="ctrl-minimise-sml" class="button">_</div> 
               <div id="ctrl-maximise-sml" class="button">&#x25a1;</div>
               <div id="ctrl-close-sml" class="button close">&#215;</div>
             </div>
-            <div class="popup-text button send" id="closeAll">
-              <div id="close-button">Close all</div>
+            <div class="popup-text button" id="closeAll">
+                <div id="close-button">
+                   <label class="switch">
+                       <input id="pause" type="checkbox" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
             </div>
           </div>
           <!--end close-->
