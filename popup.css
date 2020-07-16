@@ -190,7 +190,7 @@ img#arebyte_logo {
 
 #close-popup {
     position: relative;
-    width: fit-content;
+    width: -moz-fit-content;
     height: 20%;
     left: 10%;
     bottom: 15px;
