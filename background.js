@@ -54,7 +54,11 @@ var create_alarms = () => {
 
 // Update alarms on system idle update
 browser.idle.onStateChanged.addListener(function() {
-   create_alarms(); 
+    browser.storage.local.get(['paused'], function(result) {
+        if (result.paused === false) {
+            create_alarms(); 
+        }
+    });
 });
 
 // Clear Window cache + create alarms on install
