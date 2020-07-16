@@ -23,6 +23,7 @@ function closeAll() {
             }
         });
         browser.storage.local.set({popups: []});
+        window.close();
     });
 }
 
