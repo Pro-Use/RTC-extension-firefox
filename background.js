@@ -76,8 +76,12 @@ browser.runtime.onStartup.addListener(function () {
     browser.storage.local.remove("popups", function () {
         console.log("Cleared popup cache");
     });
-    create_alarms();
-    update_icon_text();
+    browser.storage.local.get(['paused'], function(result) {
+        if (result.paused === false) {
+            create_alarms();
+            update_icon_text();
+        }
+    });
 });
 
 // Closed window listener
