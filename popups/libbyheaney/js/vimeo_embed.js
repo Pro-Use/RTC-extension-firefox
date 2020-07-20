@@ -25,3 +25,9 @@ vimeo_embed.on('loadstart', function(data) {
         vimeo_embed.off('loadstart');
     }
 });
+
+vimeo_embed.on('canplay', function() {
+    console.log('start playback');
+    vimeo_embed.play();
+    vimeo_embed.off('canplay');
+});
