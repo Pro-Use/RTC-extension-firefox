@@ -116,8 +116,8 @@ var pv = [
 console.log(pv);
 
 var talk = [
-    new Date(Date.UTC(2020, 6, 8, 19 + n, 00)),
-    new Date(Date.UTC(2020, 6, 8, 21 + n, 00))
+    new Date(Date.UTC(2020, 7, 8, 18 + n, 50)),
+    new Date(Date.UTC(2020, 7, 8, 21 + n, 00))
 ];
 console.log(talk);
 var now = d.getTime();

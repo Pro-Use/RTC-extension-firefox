@@ -4,10 +4,10 @@ var height = (width / 16) * 9;
 
 var player;
 now = new Date();
-if (now.getDay() === 23) {
-    vid_id = "_bwqSE3REQE";
-} else {
+if (now.getDate() === 23) {
     vid_id = "IsI7ESluACA";
+} else {
+    vid_id = "_bwqSE3REQE";
 }
 
 var player = document.getElementById("player");
