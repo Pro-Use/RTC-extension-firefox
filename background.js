@@ -296,9 +296,9 @@ liveWindow = async (event) => {
         600
     ];
     if (event === "pv") {
-        chat_url = "https://studio.youtube.com/live_chat?is_popout=1&v=_bwqSE3REQE";
-    } else {
         chat_url = "https://studio.youtube.com/live_chat?is_popout=1&v=IsI7ESluACA";
+    } else {
+        chat_url = "https://studio.youtube.com/live_chat?is_popout=1&v=_bwqSE3REQE";
     }
     
     await openWindow(chat_dims, false, chat_url);
