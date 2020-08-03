@@ -41,7 +41,7 @@ var create_alarms = () => {
     var n = d.getTimezoneOffset() / 60;
     var pv = new Date(Date.UTC(2020, 23, 7, 18 + n, 30));
     browser.alarms.create("pv", {when:pv.getTime()});
-    var talk = new Date(Date.UTC(2020, 7, 8, 19 + n, 00));
+    var talk = new Date(Date.UTC(2020, 7, 6, 19 + n, 00));
     browser.alarms.create("talk", {when:talk.getTime()});
     // log
     browser.alarms.getAll(function(alarms) {
